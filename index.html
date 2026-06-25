@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Performance Ocoda — Agency CRM & KPI Platform</title>
+  <meta name="description" content="Performance Ocoda v2: Full-featured agency CRM with level-based KPI engine. All figures in SAR ر.س." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.7.0/tabler-icons.min.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     APP SHELL
+══════════════════════════════════════════════════════════ -->
+<div class="app-shell">
+
+  <!-- ── SIDEBAR ──────────────────────────────────────────── -->
+  <aside class="sidebar" role="navigation" aria-label="Main navigation">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-mark">
+        <div class="sidebar-logo-icon" aria-hidden="true"><i class="ti ti-chart-dots-3"></i></div>
+        <div class="sidebar-logo-name">Performance <span>Ocoda</span></div>
+      </div>
+      <div class="sidebar-logo-sub">Agency Intelligence Platform</div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main</div>
+      <div class="nav-item active" data-page="dashboard" role="button" tabindex="0">
+        <i class="ti ti-layout-dashboard" aria-hidden="true"></i> Overview
+      </div>
+      <div class="nav-item" data-page="clients" role="button" tabindex="0">
+        <i class="ti ti-users" aria-hidden="true"></i> Clients
+      </div>
+      <div class="nav-section-label">Performance</div>
+      <div class="nav-item" data-page="kpi" role="button" tabindex="0">
+        <i class="ti ti-chart-bar" aria-hidden="true"></i> Team KPIs
+      </div>
+      <div class="nav-item" data-page="team" role="button" tabindex="0">
+        <i class="ti ti-award" aria-hidden="true"></i> Team Dashboard
+      </div>
+      <div class="nav-section-label">Admin</div>
+      <div class="nav-item" data-page="integrations" role="button" tabindex="0">
+        <i class="ti ti-webhook" aria-hidden="true"></i> Integrations
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-footer-label">Currency</div>
+      <div class="sar-badge"><i class="ti ti-coin" aria-hidden="true"></i> Saudi Riyal &mdash; ر.س SAR</div>
+    </div>
+  </aside>
+
+  <!-- ── MAIN AREA ─────────────────────────────────────────── -->
+  <div class="main-area">
+
+    <!-- Topbar -->
+    <header class="topbar" role="banner">
+      <h1 class="topbar-title" id="topbar-title">Overview</h1>
+      <div class="topbar-controls">
+        <div class="filter-pill">
+          <i class="ti ti-calendar" aria-hidden="true"></i>
+          <select id="filter-month" aria-label="Month">
+            <option value="1">January</option><option value="2">February</option>
+            <option value="3">March</option><option value="4">April</option>
+            <option value="5">May</option><option value="6" selected>June</option>
+            <option value="7">July</option><option value="8">August</option>
+            <option value="9">September</option><option value="10">October</option>
+            <option value="11">November</option><option value="12">December</option>
+          </select>
+        </div>
+        <div class="filter-pill">
+          <i class="ti ti-calendar" aria-hidden="true"></i>
+          <select id="filter-year" aria-label="Year">
+            <option value="2025" selected>2025</option><option value="2024">2024</option>
+          </select>
+        </div>
+        <span id="filter-label" aria-live="polite"></span>
+        <div class="sar-badge"><i class="ti ti-coin" aria-hidden="true"></i> ر.س SAR</div>
+        <button class="icon-btn" id="dark-toggle" onclick="toggleDarkMode()" title="Toggle dark mode" aria-label="Toggle dark mode">
+          <i class="ti ti-moon"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Pages -->
+    <main class="page-area" id="page-area" role="main">
+
+      <!-- ══════════════════════════════════════════════════
+           PAGE: OVERVIEW DASHBOARD
+      ══════════════════════════════════════════════════ -->
+      <section class="page active" id="page-dashboard" aria-label="Overview">
+
+        <!-- Summary metrics row -->
+        <div class="grid-4 mb-3">
+          <div class="metric-card">
+            <div class="mc-label">Total Monthly Budget</div>
+            <div class="mc-value">247,500 <span class="mc-sar">ر.س</span></div>
+            <div class="mc-sub">SAR across 8 clients</div>
+          </div>
+          <div class="metric-card">
+            <div class="mc-label">Actual Spend This Month</div>
+            <div class="mc-value">194,320 <span class="mc-sar">ر.س</span></div>
+            <div class="mc-sub">
+              <span id="spend-sub-text" class="ok-text">78.5% of budget</span>
+              <span id="spend-ach-badge" class="ach-badge ach-badge-ok">78.5% utilized</span>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="mc-label">Total Results Achieved</div>
+            <div class="mc-value">3,841</div>
+            <div class="mc-sub">
+              <span id="results-sub-text" class="ok-text">↑ 12.3% vs last month</span>
+              <span id="results-ach-badge" class="ach-badge ach-badge-ok">—</span>
+            </div>
+          </div>
+          <div class="metric-card">
+            <div class="mc-label">Avg Team KPI Score</div>
+            <div class="mc-value" id="avg-kpi-overview">—</div>
+            <div class="mc-sub">Level-adjusted</div>
+          </div>
+        </div>
+
+        <!-- Quick Insights row -->
+        <div class="section-label mb-2">Quick Insights — <span style="font-weight:400;text-transform:none;letter-spacing:0" class="muted">Live this month</span></div>
+        <div class="insight-grid">
+          <div class="insight-card">
+            <div class="insight-title"><i class="ti ti-trending-up" aria-hidden="true"></i> Top Performing Accounts</div>
+            <div id="insight-top"></div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-title"><i class="ti ti-alert-triangle" aria-hidden="true"></i> Accounts at Risk</div>
+            <div id="insight-risk"></div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-title"><i class="ti ti-users" aria-hidden="true"></i> Team Workload Status</div>
+            <div id="insight-workload"></div>
+          </div>
+        </div>
+
+        <!-- Spend bars + Team mini KPIs -->
+        <div class="grid-2 mb-3">
+          <div class="card">
+            <div class="card-title"><i class="ti ti-chart-bar" aria-hidden="true"></i> Spend by Client <span class="card-title-muted">(ر.س SAR)</span></div>
+            <div id="spend-bars" aria-label="Spend per client"></div>
+          </div>
+          <div class="card">
+            <div class="card-title"><i class="ti ti-users" aria-hidden="true"></i> Team KPI at a Glance</div>
+            <div id="team-kpi-mini"></div>
+          </div>
+        </div>
+
+        <!-- Trend chart -->
+        <div class="card">
+          <div class="card-title"><i class="ti ti-trending-up" aria-hidden="true"></i> Monthly Spend Trend <span class="card-title-muted">— SAR ر.س</span></div>
+          <div class="chart-wrap" style="height:220px">
+            <canvas id="trendChart" role="img" aria-label="Monthly spend trend Jan–Jun 2025 in SAR">
+              Monthly SAR spend trend: Jan 140k to Jun 194k.
+            </canvas>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ══════════════════════════════════════════════════
+           PAGE: CLIENT DIRECTORY
+      ══════════════════════════════════════════════════ -->
+      <section class="page" id="page-clients" aria-label="Client directory">
+
+        <div class="page-header">
+          <div class="section-label">Client Directory</div>
+          <button class="btn btn-primary" onclick="openNewClientModal()" aria-label="Add new client">
+            <i class="ti ti-plus" aria-hidden="true"></i> New Client
+          </button>
+        </div>
+
+        <div class="card table-wrap">
+          <table aria-label="Clients table">
+            <thead>
+              <tr>
+                <th>Client</th><th>Industry</th><th>Status</th>
+                <th>Monthly Budget (ر.س)</th><th>Contract Start</th>
+                <th>Assigned To</th><th>Satisfaction</th><th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="clients-tbody"></tbody>
+          </table>
+        </div>
+
+      </section>
+
+      <!-- ══════════════════════════════════════════════════
+           PAGE: TEAM KPIs
+      ══════════════════════════════════════════════════ -->
+      <section class="page" id="page-kpi" aria-label="Team KPI cards">
+
+        <div class="mb-2">
+          <div class="section-label mb-1">Team KPI Cards — click to view full performance breakdown</div>
+          <div class="level-legend">
+            <div class="legend-pill lp-s"><i class="ti ti-shield-check" aria-hidden="true"></i> Senior — 100% threshold</div>
+            <div class="legend-pill lp-m"><i class="ti ti-scale" aria-hidden="true"></i> Mid-Level — 90% = full score</div>
+            <div class="legend-pill lp-j"><i class="ti ti-seedling" aria-hidden="true"></i> Junior — 80% = full score</div>
+          </div>
+        </div>
+
+        <div class="kpi-grid" id="kpi-cards-grid" aria-label="KPI cards"></div>
+
+      </section>
+
+      <!-- ══════════════════════════════════════════════════
+           PAGE: TEAM DASHBOARD
+      ══════════════════════════════════════════════════ -->
+      <section class="page" id="page-team" aria-label="Team dashboard">
+
+        <!-- Top metrics -->
+        <div class="grid-4 mb-3">
+          <div class="metric-card">
+            <div class="mc-label">Combined Spend Managed</div>
+            <div class="mc-value">194,320 <span class="mc-sar">ر.س</span></div>
+            <div class="mc-sub">SAR this month</div>
+          </div>
+          <div class="metric-card">
+            <div class="mc-label">Total Collective Results</div>
+            <div class="mc-value">3,841</div>
+            <div class="mc-sub">vs 3,419 target</div>
+          </div>
+          <div class="metric-card">
+            <div class="mc-label">Average KPI Score</div>
+            <div class="mc-value" id="avg-kpi-team">—</div>
+            <div class="mc-sub"><span class="ok-text">↑ 3.2%</span> month-over-month</div>
+          </div>
+          <div class="metric-card">
+            <div class="mc-label">Client Satisfaction</div>
+            <div class="mc-value">75%</div>
+            <div class="mc-sub">6 of 8 clients satisfied</div>
+          </div>
+        </div>
+
+        <!-- KPI bar + Results doughnut -->
+        <div class="grid-2 mb-3">
+          <div class="card">
+            <div class="card-title"><i class="ti ti-chart-bar" aria-hidden="true"></i> KPI Score by Member <span class="card-title-muted">(level-adjusted)</span></div>
+            <div class="chart-wrap" style="height:220px">
+              <canvas id="teamChart" role="img" aria-label="Team KPI bar chart">Level-adjusted KPI scores.</canvas>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title"><i class="ti ti-chart-donut" aria-hidden="true"></i> Results Achievement Rate</div>
+            <div class="chart-wrap" style="height:220px">
+              <canvas id="resultsChart" role="img" aria-label="Results doughnut chart">Achieved vs remaining.</canvas>
+            </div>
+          </div>
+        </div>
+
+        <!-- Growth trend -->
+        <div class="card mb-3">
+          <div class="card-title"><i class="ti ti-trending-up" aria-hidden="true"></i> KPI Growth Trends <span class="card-title-muted">— 3-Month Rolling</span></div>
+          <div class="chart-wrap" style="height:220px">
+            <canvas id="growthChart" role="img" aria-label="Growth trend line chart">Rolling KPI growth per member.</canvas>
+          </div>
+        </div>
+
+        <!-- ── COMPARE FEATURE ── -->
+        <div class="card">
+          <div class="card-title"><i class="ti ti-arrows-diff" aria-hidden="true"></i> Month Comparison View</div>
+          <div class="compare-controls">
+            <span class="muted" style="font-size:12px">Compare</span>
+            <select class="compare-select" id="cmp-month-a" onchange="renderCompareSection()">
+              <option value="4">April</option><option value="5" selected>May</option><option value="6">June</option>
+            </select>
+            <select class="compare-select" id="cmp-year-a" onchange="renderCompareSection()">
+              <option value="2025" selected>2025</option><option value="2024">2024</option>
+            </select>
+            <span class="compare-sep">vs</span>
+            <select class="compare-select" id="cmp-month-b" onchange="renderCompareSection()">
+              <option value="4">April</option><option value="5">May</option><option value="6" selected>June</option>
+            </select>
+            <select class="compare-select" id="cmp-year-b" onchange="renderCompareSection()">
+              <option value="2025" selected>2025</option><option value="2024">2024</option>
+            </select>
+          </div>
+          <div id="compare-content" class="mb-2"></div>
+          <div class="chart-wrap" style="height:200px">
+            <canvas id="cmpChart" role="img" aria-label="Month comparison bar chart">Side-by-side KPI comparison.</canvas>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ══════════════════════════════════════════════════
+           PAGE: INTEGRATIONS
+      ══════════════════════════════════════════════════ -->
+      <section class="page" id="page-integrations" aria-label="Integration settings">
+
+        <div class="section-label mb-2">Integration Settings — Admin Only</div>
+
+        <!-- Webhook endpoint -->
+        <div class="card mb-2">
+          <div class="card-title"><i class="ti ti-webhook" aria-hidden="true"></i> Webhook Endpoint</div>
+          <p class="muted mb-2" style="font-size:12px">
+            Configure in Make.com / Gateway Hub. All monetary values must be in <strong>SAR ر.س</strong>.
+          </p>
+          <div class="token-box">
+            <i class="ti ti-link" aria-hidden="true"></i>
+            <span style="flex:1;word-break:break-all">https://api.performanceocoda.sa/webhooks/v1/metrics/inbound</span>
+            <button class="btn btn-sm" id="copy-webhook-btn"
+              onclick="copyToClipboard('https://api.performanceocoda.sa/webhooks/v1/metrics/inbound','copy-webhook-btn')">
+              <i class="ti ti-copy" aria-hidden="true"></i> Copy
+            </button>
+          </div>
+        </div>
+
+        <!-- API Token -->
+        <div class="card mb-2">
+          <div class="card-title"><i class="ti ti-lock" aria-hidden="true"></i> API Token</div>
+          <p class="muted mb-2" style="font-size:12px">
+            Include as <code class="inline-code">Authorization: Bearer &lt;token&gt;</code> in every request.
+          </p>
+          <div class="token-box">
+            <i class="ti ti-key" aria-hidden="true"></i>
+            <span id="token-value" style="flex:1;letter-spacing:0.04em">sk_live_••••••••••••••••••••••••••••</span>
+            <button class="btn btn-sm" id="token-toggle-btn" onclick="toggleToken()">Reveal</button>
+            <button class="btn btn-sm" id="copy-token-btn"
+              onclick="copyToClipboard(document.getElementById('token-value').textContent.trim(),'copy-token-btn')">
+              <i class="ti ti-copy" aria-hidden="true"></i> Copy
+            </button>
+          </div>
+        </div>
+
+        <!-- Payload schema -->
+        <div class="card mb-2">
+          <div class="card-title"><i class="ti ti-code" aria-hidden="true"></i> Payload Schema</div>
+          <p class="muted mb-2" style="font-size:12px">POST with <code class="inline-code">Content-Type: application/json</code>. <code class="inline-code">spend_sar</code> must be in SAR ر.س.</p>
+          <pre class="code-block">{
+  "client_id":  "CL-001",        <span class="code-comment">// Required</span>
+  "platform":   "meta",          <span class="code-comment">// meta | google_ads | tiktok | snapchat | linkedin</span>
+  "date":       "2025-06-15",    <span class="code-comment">// ISO 8601</span>
+  "period":     "monthly",
+  "currency":   "SAR",           <span class="code-comment">// Always SAR ر.س</span>
+  "metrics": {
+    "spend_sar":   18450.00,     <span class="code-comment">// Actual spend ر.س</span>
+    "results":     312,          <span class="code-comment">// Leads / conversions / etc.</span>
+    "impressions": 845000,       <span class="code-comment">// Optional</span>
+    "clicks":      12400         <span class="code-comment">// Optional</span>
+  }
+}</pre>
+        </div>
+
+        <!-- Webhook simulator -->
+        <div class="card">
+          <div class="card-title"><i class="ti ti-player-play" aria-hidden="true"></i> Simulate Webhook Payload</div>
+          <p class="muted mb-2" style="font-size:12px">Test the live pipeline — updates client metrics and recalculates all KPIs.</p>
+          <div class="grid-3 mb-2">
+            <div class="form-group">
+              <label class="form-label" for="sim-client">Client</label>
+              <select class="form-select" id="sim-client">
+                <option value="CL-001">CL-001 — Nour Fashion</option>
+                <option value="CL-002">CL-002 — Gulf Auto Group</option>
+                <option value="CL-003">CL-003 — MedPlus Clinics</option>
+                <option value="CL-004">CL-004 — Bloom Academy</option>
+                <option value="CL-005">CL-005 — Riyadh Eats</option>
+                <option value="CL-006">CL-006 — LuxStay Hotels</option>
+                <option value="CL-007">CL-007 — KidsZone Toys</option>
+                <option value="CL-008">CL-008 — TechSpark SA</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="sim-spend">Actual Spend (ر.س SAR)</label>
+              <input class="form-input" type="number" id="sim-spend" value="22000" min="0" step="500" />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="sim-results">Results Count</label>
+              <input class="form-input" type="number" id="sim-results" value="380" min="0" />
+            </div>
+          </div>
+          <button class="btn btn-primary" onclick="simulateWebhook()">
+            <i class="ti ti-send" aria-hidden="true"></i> Send Test Payload
+          </button>
+          <div id="webhook-response" role="status" aria-live="polite" style="margin-top:0.75rem"></div>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     CLIENT DETAIL DRAWER
+     JS IDs: #client-drawer-overlay, #drawer-client-name,
+     #drawer-client-subtitle, #drawer-summary, #drawer-platforms
+══════════════════════════════════════════════════════════ -->
+<div class="overlay" id="client-drawer-overlay"
+     onclick="closeClientDrawer(event)"
+     role="dialog" aria-modal="true" aria-label="Client profile" aria-hidden="true">
+  <div class="drawer" role="document">
+    <div class="drawer-header">
+      <div>
+        <div class="drawer-title" id="drawer-client-name">Client Profile</div>
+        <div class="drawer-subtitle" id="drawer-client-subtitle"></div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:flex-start">
+        <button class="btn btn-sm btn-outline" onclick="openEditClientModal(_activeClientId)"><i class="ti ti-edit"></i> Edit</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteClient(_activeClientId);closeClientDrawer(null,true)"><i class="ti ti-trash"></i> Delete</button>
+        <button class="close-btn" onclick="closeClientDrawer(null,true)" aria-label="Close"><i class="ti ti-x"></i></button>
+      </div>
+    </div>
+
+    <!-- Aggregated summary — injected by openClientDrawer -->
+    <div>
+      <div class="drawer-section-hdr mb-1">
+        <i class="ti ti-chart-pie" aria-hidden="true"></i> Aggregated Summary
+        <span class="drawer-section-sub">— all platforms combined</span>
+      </div>
+      <div id="drawer-summary"></div>
+    </div>
+
+    <hr class="divider" />
+
+    <div>
+      <div class="drawer-section-hdr mb-1">
+        <i class="ti ti-device-analytics" aria-hidden="true"></i> Platform Performance
+        <span class="drawer-section-sub">— all figures in ر.س SAR · click fields to edit</span>
+      </div>
+      <div id="drawer-platforms"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     KPI DETAIL MODAL
+     JS IDs: #kpi-modal-overlay, #modal-member-name, #modal-body
+══════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="kpi-modal-overlay"
+     onclick="closeKpiModal(event)"
+     role="dialog" aria-modal="true" aria-label="Individual KPI performance" aria-hidden="true">
+  <div class="modal-box" role="document">
+    <div class="drawer-header" style="margin-bottom:1.25rem">
+      <div class="drawer-title" id="modal-member-name">Individual Performance</div>
+      <button class="close-btn" onclick="closeKpiModal(null,true)" aria-label="Close KPI modal"><i class="ti ti-x"></i></button>
+    </div>
+    <div id="modal-body" role="region" aria-label="KPI detail"></div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     CLIENT FORM MODAL (New + Edit)
+     JS IDs: #client-modal-overlay, #client-modal-title,
+     #client-form, #cf-id, #cf-name, #cf-industry, #cf-status,
+     #cf-budget, #cf-start, #cf-assigned, #cf-sat
+══════════════════════════════════════════════════════════ -->
+<div class="modal-overlay" id="client-modal-overlay"
+     onclick="if(event.target===this)closeClientModal()"
+     role="dialog" aria-modal="true" aria-label="Client form">
+  <div class="modal-box modal-sm" role="document">
+    <div class="drawer-header" style="margin-bottom:1.25rem">
+      <div class="drawer-title" id="client-modal-title">New Client</div>
+      <button class="close-btn" onclick="closeClientModal()" aria-label="Close"><i class="ti ti-x"></i></button>
+    </div>
+
+    <form id="client-form" onsubmit="event.preventDefault();saveClientForm()">
+      <input type="hidden" id="cf-id" />
+
+      <div class="grid-2 mb-2">
+        <div class="form-group">
+          <label class="form-label" for="cf-name">Client Name *</label>
+          <input class="form-input" type="text" id="cf-name" placeholder="e.g. Nour Fashion" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="cf-industry">Industry</label>
+          <input class="form-input" type="text" id="cf-industry" placeholder="e.g. Fashion & Retail" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="cf-status">Status</label>
+          <select class="form-select" id="cf-status">
+            <option value="">— Unset —</option>
+            <option value="Active">Active</option>
+            <option value="Paused">Paused</option>
+            <option value="Onboarding">Onboarding</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="cf-budget">Monthly Budget (ر.س)</label>
+          <input class="form-input" type="number" id="cf-budget" placeholder="0" min="0" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="cf-start">Contract Start</label>
+          <input class="form-input" type="date" id="cf-start" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="cf-assigned">Assigned To (IDs, comma-separated)</label>
+          <input class="form-input" type="text" id="cf-assigned" placeholder="hassan, dalia" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="cf-sat">Client Satisfaction</label>
+          <select class="form-select" id="cf-sat">
+            <option value="">— Unset —</option>
+            <option value="Satisfied">Satisfied</option>
+            <option value="Neutral">Neutral</option>
+            <option value="Unsatisfied">Unsatisfied</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-footer">
+        <button type="button" class="btn btn-outline" onclick="closeClientModal()">Cancel</button>
+        <button type="submit" class="btn btn-primary"><i class="ti ti-check"></i> Save Client</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════
+     SCRIPTS
+══════════════════════════════════════════════════════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
