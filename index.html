@@ -1,78 +1,70 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>Performance Ocoda — Agency CRM & KPI Platform</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
-
 <div class="app-shell">
 
-  <!-- ═══════════════════ SIDEBAR ═══════════════════ -->
+  <!-- ══════════════ SIDEBAR ══════════════ -->
   <aside class="sidebar">
     <div class="sidebar-logo">
       <div class="logo-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/>
-          <circle cx="5" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>
-          <line x1="12" y1="6" x2="12" y2="11"/><line x1="12" y1="13" x2="12" y2="18"/>
-          <line x1="6" y1="12" x2="11" y2="12"/><line x1="13" y1="12" x2="18" y2="12"/>
-        </svg>
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
       </div>
       <div>
         <div class="logo-name">Performance <span>Ocoda</span></div>
         <div class="logo-sub">Agency Intelligence Platform</div>
       </div>
     </div>
-
     <nav class="sidebar-nav">
       <div class="nav-label">Main</div>
       <div class="nav-item active" data-page="dashboard">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
         <span>Overview</span>
       </div>
       <div class="nav-item" data-page="clients">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         <span>Clients</span>
       </div>
       <div class="nav-label">Performance</div>
       <div class="nav-item" data-page="kpi">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
         <span>Team KPIs</span>
       </div>
       <div class="nav-item" data-page="team">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
         <span>Team Dashboard</span>
       </div>
       <div class="nav-label">Admin</div>
       <div class="nav-item" data-page="integrations">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
         <span>Integrations</span>
       </div>
     </nav>
-
     <div class="sidebar-footer">
-      <div class="currency-pill">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <div class="sar-pill">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         Saudi Riyal — ر.س SAR
       </div>
     </div>
   </aside>
 
-  <!-- ═══════════════════ MAIN ═══════════════════ -->
+  <!-- ══════════════ MAIN ══════════════ -->
   <div class="main-area">
 
     <!-- TOPBAR -->
     <header class="topbar">
       <h1 class="topbar-title" id="topbar-title">Overview</h1>
       <div class="topbar-right">
-        <div class="filter-group">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <div class="filter-wrap">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
           <select id="filter-month" onchange="applyFilter()">
             <option value="1">January</option><option value="2">February</option><option value="3">March</option>
             <option value="4">April</option><option value="5">May</option><option value="6" selected>June</option>
@@ -83,142 +75,104 @@
             <option value="2024">2024</option><option value="2025" selected>2025</option><option value="2026">2026</option>
           </select>
         </div>
-        <span class="period-badge" id="period-badge">June 2025</span>
-        <div class="currency-pill">ر.س SAR</div>
-        <button class="icon-btn" id="dark-btn" onclick="toggleDark()" title="Toggle dark mode">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span class="period-tag" id="period-tag">June 2025</span>
+        <div class="sar-pill">ر.س SAR</div>
+        <button class="icon-btn" id="dark-btn" onclick="toggleDark()" title="Toggle dark mode" aria-label="Toggle dark mode">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
       </div>
     </header>
 
     <main class="page-area">
 
-      <!-- ════════ PAGE: DASHBOARD ════════ -->
+      <!-- ════════ PAGE: OVERVIEW ════════ -->
       <section class="page active" id="page-dashboard">
-
-        <!-- Metric Cards -->
-        <div class="metrics-row" id="dashboard-metrics">
-          <div class="metric-card clickable" onclick="nav('clients')">
-            <div class="mc-icon mc-blue">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-            </div>
-            <div class="mc-body">
-              <div class="mc-label">Total Monthly Budget</div>
-              <div class="mc-value" id="mc-budget">—</div>
-              <div class="mc-sub" id="mc-budget-sub">SAR across all clients</div>
-            </div>
+        <!-- Top Metric Cards -->
+        <div class="metrics-row" id="dash-metrics">
+          <div class="mc clickable" onclick="nav('clients')" role="button" tabindex="0">
+            <div class="mc-icon mc-blue"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+            <div class="mc-body"><div class="mc-lbl">Total Monthly Budget</div><div class="mc-val" id="mc-budget">—</div><div class="mc-sub" id="mc-budget-sub">SAR across clients</div></div>
           </div>
-          <div class="metric-card clickable" onclick="nav('clients')">
-            <div class="mc-icon mc-purple">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-            </div>
-            <div class="mc-body">
-              <div class="mc-label">Actual Spend This Month</div>
-              <div class="mc-value" id="mc-spend">—</div>
-              <div class="mc-sub"><span id="spend-ach-badge" class="ach-badge">—</span></div>
-            </div>
+          <div class="mc clickable" onclick="nav('clients')" role="button" tabindex="0">
+            <div class="mc-icon mc-purple"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+            <div class="mc-body"><div class="mc-lbl">Actual Spend This Month</div><div class="mc-val" id="mc-spend">—</div><div class="mc-sub"><span id="spend-badge" class="ach-badge">—</span></div></div>
           </div>
-          <div class="metric-card clickable" onclick="nav('clients')">
-            <div class="mc-icon mc-green">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            </div>
-            <div class="mc-body">
-              <div class="mc-label">Total Results Achieved</div>
-              <div class="mc-value" id="mc-results">—</div>
-              <div class="mc-sub"><span id="results-ach-badge" class="ach-badge">—</span></div>
-            </div>
+          <div class="mc clickable" onclick="nav('clients')" role="button" tabindex="0">
+            <div class="mc-icon mc-green"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+            <div class="mc-body"><div class="mc-lbl">Total Results Achieved</div><div class="mc-val" id="mc-results">—</div><div class="mc-sub"><span id="results-badge" class="ach-badge">—</span></div></div>
           </div>
-          <div class="metric-card clickable" onclick="nav('kpi')">
-            <div class="mc-icon mc-coral">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-            </div>
-            <div class="mc-body">
-              <div class="mc-label">Avg Team KPI Score</div>
-              <div class="mc-value" id="mc-kpi">—</div>
-              <div class="mc-sub">Level-adjusted · click to view</div>
-            </div>
+          <div class="mc clickable" onclick="nav('kpi')" role="button" tabindex="0">
+            <div class="mc-icon mc-coral"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+            <div class="mc-body"><div class="mc-lbl">Avg Team KPI Score</div><div class="mc-val" id="mc-kpi">—</div><div class="mc-sub">Level-adjusted · click to view</div></div>
           </div>
         </div>
 
         <!-- Intelligence Insights -->
         <div class="insights-row">
           <div class="insight-card">
-            <div class="insight-hdr insight-hdr-ok">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            <div class="insight-hdr ok-hdr">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
               Top Performing Accounts
             </div>
-            <div id="insight-top-body" class="insight-body">Loading…</div>
+            <div id="ins-top" class="ins-body">Loading…</div>
           </div>
           <div class="insight-card">
-            <div class="insight-hdr insight-hdr-bad">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <div class="insight-hdr bad-hdr">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
               Accounts at Risk
             </div>
-            <div id="insight-risk-body" class="insight-body">Loading…</div>
+            <div id="ins-risk" class="ins-body">Loading…</div>
           </div>
           <div class="insight-card">
-            <div class="insight-hdr insight-hdr-info">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <div class="insight-hdr info-hdr">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
               Team Workload Status
             </div>
-            <div id="insight-workload-body" class="insight-body">Loading…</div>
+            <div id="ins-workload" class="ins-body">Loading…</div>
           </div>
         </div>
 
-        <!-- Trend + KPI Mini -->
+        <!-- Charts row -->
         <div class="grid-2 mb-3">
-          <div class="card">
-            <div class="card-hdr"><span class="card-title">Monthly Spend Trend — ر.س</span></div>
-            <div style="height:220px;position:relative"><canvas id="trendChart"></canvas></div>
-          </div>
-          <div class="card">
-            <div class="card-hdr"><span class="card-title">Team KPI at a Glance</span></div>
-            <div id="team-kpi-mini"></div>
-          </div>
+          <div class="card"><div class="card-hdr"><span class="card-title">Monthly Spend Trend — ر.س</span></div><div style="height:220px;position:relative"><canvas id="trendChart" aria-label="Monthly spend trend chart"></canvas></div></div>
+          <div class="card"><div class="card-hdr"><span class="card-title">Team KPI at a Glance</span></div><div id="kpi-mini"></div></div>
         </div>
 
-        <!-- Spend Bars -->
-        <div class="card mb-3">
-          <div class="card-hdr"><span class="card-title">Spend by Client — ر.س SAR</span></div>
-          <div id="spend-bars"></div>
-        </div>
+        <!-- Spend bars -->
+        <div class="card mb-3"><div class="card-hdr"><span class="card-title">Spend by Client — ر.س SAR</span></div><div id="spend-bars"></div></div>
 
-        <!-- Compare View -->
+        <!-- Compare view -->
         <div class="card mb-3">
           <div class="card-hdr">
             <span class="card-title">Compare Months</span>
-            <div class="compare-controls">
-              <select class="cmp-sel" id="cmp-m-a"><option value="4">Apr</option><option value="5" selected>May</option><option value="6">Jun</option></select>
-              <select class="cmp-sel" id="cmp-y-a"><option value="2025" selected>2025</option><option value="2024">2024</option></select>
+            <div class="cmp-controls">
+              <select class="cmp-sel" id="cmp-ma"><option value="4">Apr</option><option value="5" selected>May</option><option value="6">Jun</option></select>
+              <select class="cmp-sel" id="cmp-ya"><option value="2025" selected>2025</option><option value="2024">2024</option></select>
               <span class="vs-sep">vs</span>
-              <select class="cmp-sel" id="cmp-m-b"><option value="4">Apr</option><option value="5">May</option><option value="6" selected>Jun</option></select>
-              <select class="cmp-sel" id="cmp-y-b"><option value="2025" selected>2025</option><option value="2024">2024</option></select>
+              <select class="cmp-sel" id="cmp-mb"><option value="4">Apr</option><option value="5">May</option><option value="6" selected>Jun</option></select>
+              <select class="cmp-sel" id="cmp-yb"><option value="2025" selected>2025</option><option value="2024">2024</option></select>
               <button class="btn btn-sm btn-primary" onclick="renderCompare()">Compare</button>
             </div>
           </div>
           <div class="grid-2" style="gap:1rem;margin-top:1rem">
-            <div id="compare-table"></div>
-            <div style="height:200px;position:relative"><canvas id="cmpChart"></canvas></div>
+            <div id="cmp-table"></div>
+            <div style="height:200px;position:relative"><canvas id="cmpChart" aria-label="Month comparison chart"></canvas></div>
           </div>
         </div>
-
       </section>
 
       <!-- ════════ PAGE: CLIENTS ════════ -->
       <section class="page" id="page-clients">
         <div class="page-hdr">
-          <div class="section-label">Client Directory</div>
+          <div class="section-lbl">Client Directory</div>
           <button class="btn btn-primary" onclick="openNewClientModal()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             New Client
           </button>
         </div>
         <div class="card table-wrap">
           <table>
-            <thead><tr>
-              <th>Client</th><th>Industry</th><th>Status</th><th>Budget (ر.س)</th>
-              <th>Start</th><th>Assigned To</th><th>Satisfaction</th><th>Actions</th>
-            </tr></thead>
+            <thead><tr><th>Client</th><th>Industry</th><th>Status</th><th>Budget (ر.س)</th><th>Start</th><th>Assigned To</th><th>Satisfaction</th><th>Actions</th></tr></thead>
             <tbody id="clients-tbody"></tbody>
           </table>
         </div>
@@ -226,129 +180,77 @@
 
       <!-- ════════ PAGE: KPIs ════════ -->
       <section class="page" id="page-kpi">
-        <div class="section-label mb-1">Team KPI Cards — click to view full breakdown & grade</div>
-        <div class="level-legend mb-3">
+        <div class="section-lbl mb-1">Team KPI Cards — click to view full breakdown & grade</div>
+        <div class="lvl-legend mb-3">
           <span class="lvl-pill lvl-senior">Senior — 100% threshold</span>
           <span class="lvl-pill lvl-mid">Mid-Level — 90% = full score</span>
           <span class="lvl-pill lvl-junior">Junior — 80% = full score</span>
         </div>
-        <div class="kpi-grid" id="kpi-cards-grid"></div>
+        <div class="kpi-grid" id="kpi-grid"></div>
       </section>
 
       <!-- ════════ PAGE: TEAM DASHBOARD ════════ -->
       <section class="page" id="page-team">
         <div class="metrics-row mb-3">
-          <div class="metric-card">
-            <div class="mc-icon mc-purple">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-            </div>
-            <div class="mc-body"><div class="mc-label">Combined Spend</div><div class="mc-value" id="team-spend">—</div><div class="mc-sub">SAR this month</div></div>
-          </div>
-          <div class="metric-card">
-            <div class="mc-icon mc-green">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            </div>
-            <div class="mc-body"><div class="mc-label">Collective Results</div><div class="mc-value" id="team-results">—</div><div class="mc-sub" id="team-results-sub">vs target</div></div>
-          </div>
-          <div class="metric-card">
-            <div class="mc-icon mc-coral">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-            </div>
-            <div class="mc-body"><div class="mc-label">Average KPI Score</div><div class="mc-value" id="avg-kpi-team">—</div><div class="mc-sub">Level-adjusted</div></div>
-          </div>
-          <div class="metric-card">
-            <div class="mc-icon mc-blue">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            </div>
-            <div class="mc-body"><div class="mc-label">Client Satisfaction</div><div class="mc-value" id="team-sat">—</div><div class="mc-sub">Satisfied clients</div></div>
-          </div>
+          <div class="mc"><div class="mc-icon mc-purple"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div class="mc-body"><div class="mc-lbl">Combined Spend</div><div class="mc-val" id="t-spend">—</div><div class="mc-sub">SAR this month</div></div></div>
+          <div class="mc"><div class="mc-icon mc-green"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="mc-body"><div class="mc-lbl">Collective Results</div><div class="mc-val" id="t-results">—</div><div class="mc-sub" id="t-results-sub">vs target</div></div></div>
+          <div class="mc"><div class="mc-icon mc-coral"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div><div class="mc-body"><div class="mc-lbl">Average KPI Score</div><div class="mc-val" id="t-kpi-avg">—</div><div class="mc-sub">Level-adjusted</div></div></div>
+          <div class="mc"><div class="mc-icon mc-blue"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><div class="mc-body"><div class="mc-lbl">Client Satisfaction</div><div class="mc-val" id="t-sat">—</div><div class="mc-sub">Satisfied clients</div></div></div>
         </div>
         <div class="grid-2 mb-3">
-          <div class="card">
-            <div class="card-hdr"><span class="card-title">KPI by Member (Level-Adjusted)</span></div>
-            <div style="height:220px;position:relative"><canvas id="teamChart"></canvas></div>
-          </div>
-          <div class="card">
-            <div class="card-hdr"><span class="card-title">Results Achievement Rate</span></div>
-            <div style="height:220px;position:relative"><canvas id="resultsChart"></canvas></div>
-          </div>
+          <div class="card"><div class="card-hdr"><span class="card-title">KPI by Member (Level-Adjusted)</span></div><div style="height:220px;position:relative"><canvas id="teamChart" aria-label="Team KPI bar chart"></canvas></div></div>
+          <div class="card"><div class="card-hdr"><span class="card-title">Results Achievement Rate</span></div><div style="height:220px;position:relative"><canvas id="resultsChart" aria-label="Results achievement doughnut chart"></canvas></div></div>
         </div>
-        <div class="card">
-          <div class="card-hdr"><span class="card-title">KPI Growth Trends — 3-Month Rolling</span></div>
-          <div style="height:220px;position:relative"><canvas id="growthChart"></canvas></div>
-        </div>
+        <div class="card"><div class="card-hdr"><span class="card-title">KPI Growth Trends — 3-Month Rolling</span></div><div style="height:220px;position:relative"><canvas id="growthChart" aria-label="KPI growth line chart"></canvas></div></div>
       </section>
 
       <!-- ════════ PAGE: INTEGRATIONS ════════ -->
       <section class="page" id="page-integrations">
-        <div class="section-label mb-2">Integration Settings — Admin Only</div>
-
+        <div class="section-lbl mb-2">Integration Settings — Admin Only</div>
         <div class="card mb-2">
           <div class="card-hdr"><span class="card-title">Webhook Endpoint</span></div>
-          <p class="body-text mb-2">Send live ad metrics from Make.com or Gateway Hub. All spend values must be in <strong>SAR ر.س</strong>.</p>
+          <p class="body-txt mb-2">Send live ad metrics from Make.com or Gateway Hub. All spend values must be in <strong>SAR ر.س</strong>.</p>
           <div class="token-box">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
             <span style="flex:1;word-break:break-all">https://api.performanceocoda.sa/webhooks/v1/metrics/inbound</span>
-            <button class="btn btn-sm" id="btn-copy-wh" onclick="copyText('https://api.performanceocoda.sa/webhooks/v1/metrics/inbound','btn-copy-wh')">Copy</button>
+            <button class="btn btn-sm" id="btn-cp-wh" onclick="copyText('https://api.performanceocoda.sa/webhooks/v1/metrics/inbound','btn-cp-wh')">Copy</button>
           </div>
         </div>
-
         <div class="card mb-2">
           <div class="card-hdr"><span class="card-title">API Token</span></div>
-          <p class="body-text mb-2">Include as <code class="inline-code">Authorization: Bearer &lt;token&gt;</code> in every request.</p>
+          <p class="body-txt mb-2">Include as <code class="icode">Authorization: Bearer &lt;token&gt;</code> in every request.</p>
           <div class="token-box">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
             <span id="token-val" style="flex:1;font-family:monospace;letter-spacing:.04em">sk_live_••••••••••••••••••••••••••••</span>
-            <button class="btn btn-sm" id="btn-token-tog" onclick="toggleToken()">Reveal</button>
-            <button class="btn btn-sm" id="btn-copy-tk" onclick="copyText(document.getElementById('token-val').textContent.trim(),'btn-copy-tk')">Copy</button>
+            <button class="btn btn-sm" id="btn-tok-tog" onclick="toggleToken()">Reveal</button>
+            <button class="btn btn-sm" id="btn-cp-tok" onclick="copyText(document.getElementById('token-val').textContent.trim(),'btn-cp-tok')">Copy</button>
           </div>
         </div>
-
         <div class="card mb-2">
           <div class="card-hdr"><span class="card-title">Payload Schema</span></div>
           <pre class="code-block">{
-  "client_id":  "CL-001",        <span class="code-comment">// Required — matches client ID</span>
-  "platform":   "meta",          <span class="code-comment">// meta | google_ads | tiktok | snapchat | linkedin</span>
+  "client_id":  "CL-001",
+  "platform":   "meta",          <span class="cc">// meta | google_ads | tiktok | snapchat | linkedin</span>
+  "objective":  "Leads",         <span class="cc">// matches your Campaign Objective key</span>
   "date":       "2025-06-15",
   "period":     "monthly",
-  "currency":   "SAR",           <span class="code-comment">// Always SAR ر.س</span>
+  "currency":   "SAR",
   "metrics": {
-    "spend_sar":   18450.00,     <span class="code-comment">// Actual spend in ر.س</span>
-    "results":     312,
-    "impressions": 845000,
-    "clicks":      12400
+    "spend_sar":   18450.00,     <span class="cc">// Actual spend in ر.س</span>
+    "results":     312
   }
 }</pre>
         </div>
-
         <div class="card">
           <div class="card-hdr"><span class="card-title">Simulate Payload</span></div>
-          <p class="body-text mb-2">Test the live-update pipeline — updates metrics and recalculates all KPIs instantly.</p>
-          <div class="form-row-3 mb-2">
-            <div class="form-group">
-              <label class="form-label">Client</label>
-              <select class="form-input" id="sim-client">
-                <option value="CL-001">CL-001 — Nour Fashion</option>
-                <option value="CL-002">CL-002 — Gulf Auto Group</option>
-                <option value="CL-003">CL-003 — MedPlus Clinics</option>
-                <option value="CL-004">CL-004 — Bloom Academy</option>
-                <option value="CL-005">CL-005 — Riyadh Eats</option>
-                <option value="CL-006">CL-006 — LuxStay Hotels</option>
-                <option value="CL-007">CL-007 — KidsZone Toys</option>
-                <option value="CL-008">CL-008 — TechSpark SA</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Actual Spend (ر.س)</label>
-              <input class="form-input" type="number" id="sim-spend" value="22000" min="0" />
-            </div>
-            <div class="form-group">
-              <label class="form-label">Results Count</label>
-              <input class="form-input" type="number" id="sim-results" value="380" min="0" />
-            </div>
+          <p class="body-txt mb-2">Test the live-update pipeline — updates metrics and recalculates all KPIs instantly.</p>
+          <div class="form-row3 mb-2">
+            <div class="fg"><label class="fl">Client</label><select class="fi" id="sim-client"><option value="CL-001">CL-001 — Nour Fashion</option><option value="CL-002">CL-002 — Gulf Auto</option><option value="CL-003">CL-003 — MedPlus</option><option value="CL-004">CL-004 — Bloom Academy</option><option value="CL-005">CL-005 — Riyadh Eats</option><option value="CL-006">CL-006 — LuxStay</option><option value="CL-007">CL-007 — KidsZone</option><option value="CL-008">CL-008 — TechSpark</option></select></div>
+            <div class="fg"><label class="fl">Actual Spend (ر.س)</label><input class="fi" type="number" id="sim-spend" value="22000" min="0"/></div>
+            <div class="fg"><label class="fl">Results Count</label><input class="fi" type="number" id="sim-results" value="380" min="0"/></div>
           </div>
           <button class="btn btn-primary" onclick="simulateWebhook()">Send Test Payload</button>
-          <div id="webhook-response" style="margin-top:.75rem"></div>
+          <div id="wh-response" style="margin-top:.75rem"></div>
         </div>
       </section>
 
@@ -356,77 +258,67 @@
   </div>
 </div>
 
-<!-- ═══════════════════ CLIENT DRAWER ═══════════════════ -->
-<div class="overlay" id="client-overlay" onclick="closeClientDrawer(event)">
-  <div class="drawer">
+<!-- ══════════════ CLIENT DRAWER ══════════════ -->
+<div class="overlay" id="cl-overlay" onclick="closeDrawer(event)" aria-modal="true" role="dialog">
+  <div class="drawer" id="cl-drawer">
     <div class="drawer-hdr">
       <div>
-        <div class="drawer-title" id="drawer-title">Client Profile</div>
-        <div class="drawer-sub" id="drawer-sub"></div>
+        <div class="drawer-title" id="dr-title">Client Profile</div>
+        <div class="drawer-sub" id="dr-sub"></div>
       </div>
-      <div class="drawer-hdr-actions">
-        <button class="btn btn-sm btn-outline" onclick="editActiveClient()">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      <div class="dr-hdr-btns">
+        <button class="btn btn-sm btn-outline" onclick="editActive()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
           Edit
         </button>
-        <button class="btn btn-sm btn-danger" onclick="deleteActiveClient()">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+        <button class="btn btn-sm btn-danger" onclick="deleteActive()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
           Delete
         </button>
-        <button class="icon-btn" onclick="closeClientDrawer(null,true)">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        <button class="icon-btn" onclick="closeDrawer(null,true)" aria-label="Close drawer">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
     </div>
-    <div id="drawer-body"></div>
+    <div id="dr-body"></div>
   </div>
 </div>
 
-<!-- ═══════════════════ KPI MODAL ═══════════════════ -->
-<div class="overlay overlay-center" id="kpi-overlay" onclick="closeKpiModal(event)">
+<!-- ══════════════ KPI MODAL ══════════════ -->
+<div class="overlay overlay-center" id="kpi-overlay" onclick="closeKpiModal(event)" aria-modal="true" role="dialog">
   <div class="modal-box">
     <div class="drawer-hdr" style="margin-bottom:1.25rem">
       <div class="drawer-title" id="kpi-modal-title">Performance Detail</div>
-      <button class="icon-btn" onclick="closeKpiModal(null,true)">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      <button class="icon-btn" onclick="closeKpiModal(null,true)" aria-label="Close KPI modal">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
     <div id="kpi-modal-body"></div>
   </div>
 </div>
 
-<!-- ═══════════════════ CLIENT FORM MODAL ═══════════════════ -->
-<div class="overlay overlay-center" id="client-form-overlay" onclick="if(event.target===this)closeClientForm()">
+<!-- ══════════════ CLIENT FORM MODAL ══════════════ -->
+<div class="overlay overlay-center" id="cf-overlay" onclick="if(event.target===this)closeCF()" aria-modal="true" role="dialog">
   <div class="modal-box modal-sm">
     <div class="drawer-hdr" style="margin-bottom:1.25rem">
-      <div class="drawer-title" id="client-form-title">New Client</div>
-      <button class="icon-btn" onclick="closeClientForm()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      <div class="drawer-title" id="cf-title">New Client</div>
+      <button class="icon-btn" onclick="closeCF()" aria-label="Close form">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
     </div>
-    <form id="client-form" onsubmit="event.preventDefault();saveClientForm()">
-      <input type="hidden" id="cf-eid" />
+    <form id="cf-form" onsubmit="event.preventDefault();saveCF()">
+      <input type="hidden" id="cf-eid"/>
       <div class="form-grid mb-2">
-        <div class="form-group"><label class="form-label">Client Name *</label><input class="form-input" id="cf-name" placeholder="e.g. Nour Fashion" required /></div>
-        <div class="form-group"><label class="form-label">Industry</label><input class="form-input" id="cf-industry" placeholder="e.g. Fashion & Retail" /></div>
-        <div class="form-group"><label class="form-label">Status</label>
-          <select class="form-input" id="cf-status">
-            <option value="">— Optional —</option>
-            <option value="Active">Active</option><option value="Paused">Paused</option><option value="Onboarding">Onboarding</option>
-          </select>
-        </div>
-        <div class="form-group"><label class="form-label">Monthly Budget (ر.س)</label><input class="form-input" type="number" id="cf-budget" placeholder="0" min="0" /></div>
-        <div class="form-group"><label class="form-label">Contract Start</label><input class="form-input" type="date" id="cf-start" /></div>
-        <div class="form-group"><label class="form-label">Assigned To (member IDs, comma-sep)</label><input class="form-input" id="cf-assigned" placeholder="hassan, dalia" /></div>
-        <div class="form-group"><label class="form-label">Client Satisfaction</label>
-          <select class="form-input" id="cf-sat">
-            <option value="">— Optional —</option>
-            <option value="Satisfied">Satisfied</option><option value="Neutral">Neutral</option><option value="Unsatisfied">Unsatisfied</option>
-          </select>
-        </div>
+        <div class="fg"><label class="fl">Client Name *</label><input class="fi" id="cf-name" placeholder="e.g. Nour Fashion" required/></div>
+        <div class="fg"><label class="fl">Industry</label><input class="fi" id="cf-industry" placeholder="e.g. Fashion & Retail"/></div>
+        <div class="fg"><label class="fl">Status</label><select class="fi" id="cf-status"><option value="">— Optional —</option><option value="Active">Active</option><option value="Paused">Paused</option><option value="Onboarding">Onboarding</option></select></div>
+        <div class="fg"><label class="fl">Monthly Budget (ر.س)</label><input class="fi" type="number" id="cf-budget" placeholder="0" min="0"/></div>
+        <div class="fg"><label class="fl">Contract Start</label><input class="fi" type="date" id="cf-start"/></div>
+        <div class="fg"><label class="fl">Assigned To (IDs, comma-sep)</label><input class="fi" id="cf-assigned" placeholder="hassan, dalia"/></div>
+        <div class="fg"><label class="fl">Client Satisfaction</label><select class="fi" id="cf-sat"><option value="">— Optional —</option><option value="Satisfied">Satisfied</option><option value="Neutral">Neutral</option><option value="Unsatisfied">Unsatisfied</option></select></div>
       </div>
       <div class="form-footer">
-        <button type="button" class="btn btn-outline" onclick="closeClientForm()">Cancel</button>
+        <button type="button" class="btn btn-outline" onclick="closeCF()">Cancel</button>
         <button type="submit" class="btn btn-primary">Save Client</button>
       </div>
     </form>
