@@ -177,27 +177,78 @@ let _clientCounter = 9;
    4. DATA HELPERS — platform totals from objectives
 ══════════════════════════════════════════════════════════════ */
 
-/** Sum all objectives for a platform → {totalTR, totalAR, totalTS, totalAS} */
-function platTotals(platform) {
+/**
+ * platStats(platform)
+ *
+ * Returns raw spend totals (summed directly — spend is homogeneous SAR)
+ * and a results "achievement average" across all active objectives
+ * (because 1 Conversion ≠ 1 Message — we must NOT sum raw counts).
+ *
+ * resultsAvgRate  = average of each objective's (actual/target) rate
+ *                   for objectives that have a target > 0.
+ *                   Range: 0–1.  Represents the platform's composite
+ *                   results performance.
+ *
+ * totalTS / totalAS  = plain sum (SAR is homogeneous).
+ *
+ * For backward-compat, totalTR and totalAR are still returned as raw
+ * sums so the drawer can show absolute numbers to the manager.
+ */
+function platStats(platform) {
   let totalTR=0, totalAR=0, totalTS=0, totalAS=0;
+  let objPctSum=0, objPctCount=0;
+
   (platform.objectives || []).forEach(o => {
-    totalTR += o.targetResults  || 0;
-    totalAR += o.actualResults  || 0;
-    totalTS += o.targetSpend    || 0;
-    totalAS += o.actualSpend    || 0;
+    totalTR += o.targetResults || 0;
+    totalAR += o.actualResults || 0;
+    totalTS += o.targetSpend   || 0;
+    totalAS += o.actualSpend   || 0;
+    // Only include objectives that have a target set
+    if ((o.targetResults || 0) > 0) {
+      objPctSum   += (o.actualResults || 0) / o.targetResults;
+      objPctCount += 1;
+    }
   });
-  return { totalTR, totalAR, totalTS, totalAS };
+
+  // Average-of-percentages for results (avoids cross-type distortion)
+  const resultsAvgRate = objPctCount > 0 ? objPctSum / objPctCount : 0;
+  // Spend is SAR — homogeneous, plain ratio is correct
+  const spendRate      = totalTS > 0 ? totalAS / totalTS : 0;
+
+  return { totalTR, totalAR, totalTS, totalAS, resultsAvgRate, spendRate };
 }
 
-/** Sum all platforms for a client */
+/** Keep platTotals as a thin alias so nothing else breaks */
+function platTotals(platform) { return platStats(platform); }
+
+/**
+ * clientTotals(client)
+ *
+ * tS / aS  — raw SAR sums (homogeneous, safe to add).
+ * tR / aR  — raw result sums (kept for display only).
+ *
+ * resultsRate — spend-weighted average of each platform's
+ *   resultsAvgRate. A platform that spends more has proportionally
+ *   more impact on the composite client results score.
+ *   This is the value used in the KPI engine.
+ */
 function clientTotals(client) {
   let tR=0, aR=0, tS=0, aS=0;
+  let weightedRateSum=0;
+
   (client.platforms || []).forEach(p => {
-    const pt = platTotals(p);
-    tR += pt.totalTR; aR += pt.totalAR;
-    tS += pt.totalTS; aS += pt.totalAS;
+    const ps = platStats(p);
+    tR += ps.totalTR; aR += ps.totalAR;
+    tS += ps.totalTS; aS += ps.totalAS;
+    // Weight each platform's results rate by its own target spend
+    weightedRateSum += ps.resultsAvgRate * ps.totalTS;
   });
-  return { tR, aR, tS, aS };
+
+  // Spend-weighted composite results rate for this client
+  const resultsRate = tS > 0 ? weightedRateSum / tS : 0;
+  const spendRate   = tS > 0 ? aS / tS : 0;
+
+  return { tR, aR, tS, aS, resultsRate, spendRate };
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -273,11 +324,14 @@ function calcKpi(memberId) {
   mc.forEach(c => {
     const ct = clientTotals(c);
     const weight  = totalTS > 0 ? ct.tS / totalTS : 0;
-    const rawRate = ct.tR  > 0 ? ct.aR / ct.tR   : 0;
+    // Use resultsRate (avg-of-pct) instead of raw aR/tR sum ratio
+    const rawRate = ct.resultsRate;
     const adjRate = levelAdjust(rawRate, m.level);
     const contrib = weight * adjRate * 70;
     weightedScore += weight * adjRate;
-    breakdown.push({ client:c, cTS:ct.tS, cTR:ct.tR, cAR:ct.aR, weight, rawRate, adjRate, contrib });
+    breakdown.push({ client:c, cTS:ct.tS, cTR:ct.tR, cAR:ct.aR,
+                     weight, rawRate, adjRate, contrib,
+                     resultsRate: ct.resultsRate });
   });
 
   const sectionA = Math.round(weightedScore * 70);
@@ -341,21 +395,30 @@ function renderMetricCards() {
   setHTML('mc-budget',     fmtS(totalBudget));
   setHTML('mc-budget-sub', `SAR across ${clients.length} clients`);
 
+  // Aggregate across all clients
   let totTS=0, totAS=0, totTR=0, totAR=0;
+  let clientRateSum=0, clientRateCount=0;
   clients.forEach(c => {
     const ct = clientTotals(c);
-    totTS+=ct.tS; totAS+=ct.aS; totTR+=ct.tR; totAR+=ct.aR;
+    totTS += ct.tS; totAS += ct.aS; totTR += ct.tR; totAR += ct.aR;
+    if (ct.tS > 0) {
+      // Spend-weight each client's resultsRate for global average
+      clientRateSum   += ct.resultsRate * ct.tS;
+      clientRateCount += ct.tS;
+    }
   });
 
   const sRate = totTS>0 ? totAS/totTS : 0;
+  // Global results rate = spend-weighted avg-of-pct
+  const rRate = clientRateCount>0 ? clientRateSum/clientRateCount : 0;
+
   setHTML('mc-spend', fmtS(totAS));
   const sb = $id('spend-badge');
   if(sb){ sb.className=`ach-badge ach-${achCls(sRate)}`; sb.textContent=`${pctF(sRate*100)} utilized`; }
 
-  const rRate = totTR>0 ? totAR/totTR : 0;
   setHTML('mc-results', fmt(totAR));
   const rb = $id('results-badge');
-  if(rb){ rb.className=`ach-badge ach-${achCls(rRate)}`; rb.textContent=`${pctF(rRate*100)} of ${fmt(totTR)} target`; }
+  if(rb){ rb.className=`ach-badge ach-${achCls(rRate)}`; rb.textContent=`${pctF(rRate*100)} avg achievement`; }
 
   const avg = Math.round(members.reduce((s,m)=>s+calcKpi(m.id).total,0)/members.length);
   setHTML('mc-kpi', pct(avg));
@@ -366,7 +429,7 @@ function renderInsights() {
   const top=[], risk=[];
   clients.forEach(c => {
     const ct = clientTotals(c);
-    const r  = ct.tR>0 ? ct.aR/ct.tR : 0;
+    const r  = ct.resultsRate;           // avg-of-pct (correct)
     if (r>=0.90) top.push({name:c.name, r});
     if (r<0.70 && c.status==='Active') risk.push({name:c.name, r});
   });
@@ -428,8 +491,8 @@ function renderClientTable() {
   tbody.innerHTML=clients.map(c=>{
     const aNames=c.assigned.map(id=>members.find(m=>m.id===id)?.name||id).join(', ');
     const ct=clientTotals(c);
-    const r=ct.tR>0?ct.aR/ct.tR:0;
-    const achB=ct.tR>0?achBadge(r,'achieved'):'';
+    const r=ct.resultsRate;                          // avg-of-pct
+    const achB=ct.tS>0?achBadge(r,'achieved'):'';   // show when any spend exists
     return `<tr data-cid="${c.id}">
       <td><span class="cl-link" data-cid="${c.id}">${c.name}</span> ${achB}</td>
       <td class="muted">${c.industry||'—'}</td>
@@ -484,7 +547,8 @@ function openDrawer(cid) {
 
 function buildDrawerBody(c) {
   const ct=clientTotals(c);
-  const rR=ct.tR>0?ct.aR/ct.tR:0, sR=ct.tS>0?ct.aS/ct.tS:0;
+  const rR=ct.resultsRate;   // avg-of-pct across all objectives
+  const sR=ct.spendRate;     // plain SAR ratio (homogeneous)
 
   /* Aggregated summary section */
   const summary=`
@@ -497,29 +561,42 @@ function buildDrawerBody(c) {
       <div class="sum-card"><div class="sum-lbl">Actual Spend</div><div class="sum-val ${achCls(sR)}-t">${fmtS(ct.aS)}</div><div class="sum-sub">${achBadge(sR,'utilized')}</div></div>
     </div>
     <div class="sum-bars">
-      <div class="sum-bar-row"><span class="sum-bar-lbl">Results</span><div class="sbar-trk" style="flex:1"><div class="sbar-fill sf-${achCls(rR)}" style="width:${Math.min(rR*100,100)}%"></div></div><span class="sum-bar-val">${fmt(ct.aR)} / ${fmt(ct.tR)}</span></div>
-      <div class="sum-bar-row"><span class="sum-bar-lbl">Spend ${APP.sym}</span><div class="sbar-trk" style="flex:1"><div class="sbar-fill sf-${achCls(sR)}" style="width:${Math.min(sR*100,100)}%"></div></div><span class="sum-bar-val">${fmtS(ct.aS)} / ${fmtS(ct.tS)}</span></div>
+      <div class="sum-bar-row">
+        <span class="sum-bar-lbl">Results avg</span>
+        <div class="sbar-trk" style="flex:1"><div class="sbar-fill sf-${achCls(rR)}" style="width:${Math.min(rR*100,100)}%"></div></div>
+        <span class="sum-bar-val">${pctF(rR*100)} avg achieved</span>
+      </div>
+      <div class="sum-bar-row">
+        <span class="sum-bar-lbl">Spend ${APP.sym}</span>
+        <div class="sbar-trk" style="flex:1"><div class="sbar-fill sf-${achCls(sR)}" style="width:${Math.min(sR*100,100)}%"></div></div>
+        <span class="sum-bar-val">${fmtS(ct.aS)} / ${fmtS(ct.tS)}</span>
+      </div>
     </div>
   </div>
   <hr class="divider"/>`;
 
   /* Platform cards with per-objective input rows */
   const platHTML=c.platforms.map((p,pIdx)=>{
-    const pt=platTotals(p);
-    const rateR=pt.totalTR>0?pt.totalAR/pt.totalTR:0;
-    const rateS=pt.totalTS>0?pt.totalAS/pt.totalTS:0;
-    const overallRate=(rateR+rateS)/2;
+    const ps=platStats(p);
+    // resultsAvgRate = avg-of-pct (correct composite metric)
+    // spendRate      = plain SAR ratio
+    const overallRate=(ps.resultsAvgRate + ps.spendRate)/2;
 
-    /* Per-objective rows */
+    /* Per-objective rows — each shows its own % badge */
     const objRows=(p.objectives||[]).map((o,oIdx)=>{
-      const or=o.targetResults>0?o.actualResults/o.targetResults:0;
-      const os=o.targetSpend>0?o.actualSpend/o.targetSpend:0;
+      const or=o.targetResults>0 ? o.actualResults/o.targetResults : 0;
+      const os=o.targetSpend>0   ? o.actualSpend/o.targetSpend     : 0;
+      // Individual objective achievement badge (results %)
+      const objPctBadge=o.targetResults>0
+        ? `<span class="ach-badge ach-${achCls(or)}" style="font-size:10px;margin-left:6px">${pctF(or*100)} results</span>`
+        : '';
       return `
       <div class="obj-row" id="objrow-${c.id}-${pIdx}-${oIdx}">
         <div class="obj-row-hdr">
           <div class="obj-row-name">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
             ${o.name}
+            ${objPctBadge}
             ${platPerfBadge(or)}
           </div>
           <button class="obj-row-del" onclick="removeObjRow('${c.id}',${pIdx},${oIdx})" title="Remove objective" aria-label="Remove ${o.name}">
@@ -581,22 +658,47 @@ function buildDrawerBody(c) {
       <div class="obj-rows">${objRows||'<div class="muted" style="font-size:12px;padding:8px 0">No objectives yet — add one above to unlock metric inputs.</div>'}</div>
 
       <!-- Platform totals (auto-aggregated) -->
-      ${pt.totalTR>0||pt.totalTS>0?`
+      ${ps.totalTS>0?`
       <div class="plat-totals">
-        <div class="plat-totals-lbl">Platform Totals — Auto-Aggregated</div>
+        <div class="plat-totals-lbl">
+          Platform Totals — Auto-Aggregated
+          <span style="font-weight:400;font-size:9px;opacity:.75;margin-left:6px">
+            Results % = avg of objective achievement rates (not raw sum)
+          </span>
+        </div>
         <div class="plat-totals-grid">
-          <div class="pt-cell"><div class="pt-lbl">Target Results</div><div class="pt-val">${fmt(pt.totalTR)}</div></div>
-          <div class="pt-cell"><div class="pt-lbl">Actual Results</div><div class="pt-val">${fmt(pt.totalAR)} (${pctF(rateR*100)})</div></div>
-          <div class="pt-cell"><div class="pt-lbl">Target Spend</div><div class="pt-val">${fmtS(pt.totalTS)}</div></div>
-          <div class="pt-cell"><div class="pt-lbl">Actual Spend</div><div class="pt-val">${fmtS(pt.totalAS)} (${pctF(rateS*100)})</div></div>
+          <div class="pt-cell">
+            <div class="pt-lbl">Results Avg Achievement</div>
+            <div class="pt-val" style="font-size:16px">${pctF(ps.resultsAvgRate*100)}</div>
+          </div>
+          <div class="pt-cell">
+            <div class="pt-lbl">Active Objectives</div>
+            <div class="pt-val">${(p.objectives||[]).filter(o=>o.targetResults>0).length} with targets</div>
+          </div>
+          <div class="pt-cell">
+            <div class="pt-lbl">Target Spend</div>
+            <div class="pt-val">${fmtS(ps.totalTS)}</div>
+          </div>
+          <div class="pt-cell">
+            <div class="pt-lbl">Actual Spend</div>
+            <div class="pt-val">${fmtS(ps.totalAS)} <span style="font-size:10px;opacity:.8">(${pctF(ps.spendRate*100)})</span></div>
+          </div>
         </div>
       </div>`:''}
 
-      <!-- Progress bars -->
-      ${pt.totalTR>0||pt.totalTS>0?`
+      <!-- Progress bars using corrected rates -->
+      ${ps.totalTS>0?`
       <div class="plat-bars">
-        <div class="sbar-row"><div class="sbar-lbl">Results</div><div class="sbar-trk"><div class="sbar-fill sf-${achCls(rateR)}" style="width:${Math.min(rateR*100,100)}%"></div></div><div class="sbar-val">${fmt(pt.totalAR)} / ${fmt(pt.totalTR)}</div></div>
-        <div class="sbar-row"><div class="sbar-lbl">Spend ${APP.sym}</div><div class="sbar-trk"><div class="sbar-fill sf-${achCls(rateS)}" style="width:${Math.min(rateS*100,100)}%"></div></div><div class="sbar-val">${fmtS(pt.totalAS)} / ${fmtS(pt.totalTS)}</div></div>
+        <div class="sbar-row">
+          <div class="sbar-lbl">Results avg</div>
+          <div class="sbar-trk"><div class="sbar-fill sf-${achCls(ps.resultsAvgRate)}" style="width:${Math.min(ps.resultsAvgRate*100,100)}%"></div></div>
+          <div class="sbar-val">${pctF(ps.resultsAvgRate*100)} avg</div>
+        </div>
+        <div class="sbar-row">
+          <div class="sbar-lbl">Spend ${APP.sym}</div>
+          <div class="sbar-trk"><div class="sbar-fill sf-${achCls(ps.spendRate)}" style="width:${Math.min(ps.spendRate*100,100)}%"></div></div>
+          <div class="sbar-val">${fmtS(ps.totalAS)} / ${fmtS(ps.totalTS)}</div>
+        </div>
       </div>`:''}
     </div>`;
   }).join('');
