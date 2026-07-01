@@ -10,9 +10,43 @@
   <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
-<div class="app-shell" id="app-shell" style="display:none">
 
-  <!-- ══════════════ SIDEBAR ══════════════ -->
+<!-- ══════════════ LOGIN OVERLAY ══════════════ -->
+<div id="login-overlay">
+  <div class="login-wrap">
+    <div class="login-brand">
+      <div class="login-logo">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <div class="login-brand-name">Performance <span>Ocoda</span></div>
+      <div class="login-brand-sub">Agency Intelligence Platform</div>
+    </div>
+
+    <div class="login-card" id="login-card">
+      <div class="login-card-title">Welcome back</div>
+      <div class="login-card-sub">Sign in to access your dashboard</div>
+
+      <div class="lf-group">
+        <label class="lf-label" for="li-user">Username</label>
+        <input class="lf-input" id="li-user" type="text" placeholder="Enter your username"
+               autocomplete="username" spellcheck="false"/>
+      </div>
+      <div class="lf-group">
+        <label class="lf-label" for="li-pass">Password</label>
+        <input class="lf-input" id="li-pass" type="password" placeholder="Enter your password"
+               autocomplete="current-password"/>
+      </div>
+
+      <button class="login-btn" id="login-submit" type="button">Sign In →</button>
+      <div id="login-err" class="login-err" role="alert" aria-live="assertive"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ APP SHELL ══════════════ -->
+<div class="app-shell" id="app-shell">
+
+  <!-- SIDEBAR -->
   <aside class="sidebar">
     <div class="sidebar-logo">
       <div class="logo-icon">
@@ -24,7 +58,7 @@
       </div>
     </div>
     <nav class="sidebar-nav">
-      <div class="nav-label">Main</div>
+      <div class="nav-lbl">Main</div>
       <div class="nav-item active" data-page="dashboard">
         <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
         <span>Overview</span>
@@ -33,30 +67,30 @@
         <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         <span>Clients</span>
       </div>
-      <div class="nav-label">Performance</div>
+      <div class="nav-lbl">Performance</div>
       <div class="nav-item" data-page="kpi">
         <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
         <span>Team KPIs</span>
       </div>
-      <div class="nav-item" data-page="team">
+      <div class="nav-item" data-page="team" id="nav-team">
         <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
         <span>Team Dashboard</span>
       </div>
-      <div class="nav-label">Admin</div>
-      <div class="nav-item" data-page="integrations">
+      <div class="nav-lbl">Admin</div>
+      <div class="nav-item" data-page="integrations" id="nav-integrations">
         <svg class="ni" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
         <span>Integrations</span>
       </div>
     </nav>
     <div class="sidebar-footer">
       <div class="sar-pill">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
         Saudi Riyal — ر.س SAR
       </div>
     </div>
   </aside>
 
-  <!-- ══════════════ MAIN ══════════════ -->
+  <!-- MAIN -->
   <div class="main-area">
 
     <!-- TOPBAR -->
@@ -77,10 +111,19 @@
         </div>
         <span class="period-tag" id="period-tag">June 2025</span>
         <div class="sar-pill">ر.س SAR</div>
-        <!-- Auth: user badge + logout -->
-        <div id="user-badge" aria-label="Current user"></div>
-        <button id="logout-btn" type="button" aria-label="Logout">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+
+        <!-- User Profile Badge -->
+        <button class="user-badge-btn" id="user-badge-btn" onclick="openProfileModal()" aria-label="Open user profile">
+          <div id="user-badge-av" class="ub-av av av-sm av-blue">AD</div>
+          <div class="ub-info">
+            <div class="ub-name" id="ub-name">Admin</div>
+            <div class="ub-role" id="ub-role">Manager</div>
+          </div>
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+
+        <button class="logout-btn" id="logout-btn" onclick="logout()" title="Sign out" aria-label="Sign out">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
           Logout
         </button>
         <button class="icon-btn" id="dark-btn" onclick="toggleDark()" title="Toggle dark mode" aria-label="Toggle dark mode">
@@ -91,13 +134,16 @@
 
     <main class="page-area">
 
-      <!-- ════════ PAGE: OVERVIEW ════════ -->
+      <!-- ════ PAGE: OVERVIEW ════ -->
       <section class="page active" id="page-dashboard">
-        <!-- Top Metric Cards -->
+        <!-- Personalized context banner (shown for team members) -->
+        <div id="dash-context-banner" class="context-banner" style="display:none"></div>
+
+        <!-- Metric Cards -->
         <div class="metrics-row" id="dash-metrics">
           <div class="mc clickable" onclick="nav('clients')" role="button" tabindex="0">
             <div class="mc-icon mc-blue"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
-            <div class="mc-body"><div class="mc-lbl">Total Monthly Budget</div><div class="mc-val" id="mc-budget">—</div><div class="mc-sub" id="mc-budget-sub">SAR across clients</div></div>
+            <div class="mc-body"><div class="mc-lbl">Total Monthly Budget</div><div class="mc-val" id="mc-budget">—</div><div class="mc-sub" id="mc-budget-sub">SAR</div></div>
           </div>
           <div class="mc clickable" onclick="nav('clients')" role="button" tabindex="0">
             <div class="mc-icon mc-purple"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
@@ -109,31 +155,22 @@
           </div>
           <div class="mc clickable" onclick="nav('kpi')" role="button" tabindex="0">
             <div class="mc-icon mc-coral"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
-            <div class="mc-body"><div class="mc-lbl">Avg Team KPI Score</div><div class="mc-val" id="mc-kpi">—</div><div class="mc-sub">Level-adjusted · click to view</div></div>
+            <div class="mc-body"><div class="mc-lbl">Avg KPI Score</div><div class="mc-val" id="mc-kpi">—</div><div class="mc-sub">Level-adjusted</div></div>
           </div>
         </div>
 
         <!-- Intelligence Insights -->
         <div class="insights-row">
           <div class="insight-card">
-            <div class="insight-hdr ok-hdr">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-              Top Performing Accounts
-            </div>
+            <div class="insight-hdr ok-hdr"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>Top Performing Accounts</div>
             <div id="ins-top" class="ins-body">Loading…</div>
           </div>
           <div class="insight-card">
-            <div class="insight-hdr bad-hdr">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-              Accounts at Risk
-            </div>
+            <div class="insight-hdr bad-hdr"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Accounts at Risk</div>
             <div id="ins-risk" class="ins-body">Loading…</div>
           </div>
           <div class="insight-card">
-            <div class="insight-hdr info-hdr">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-              Team Workload Status
-            </div>
+            <div class="insight-hdr info-hdr"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Team Workload Status</div>
             <div id="ins-workload" class="ins-body">Loading…</div>
           </div>
         </div>
@@ -141,13 +178,13 @@
         <!-- Charts row -->
         <div class="grid-2 mb-3">
           <div class="card"><div class="card-hdr"><span class="card-title">Monthly Spend Trend — ر.س</span></div><div style="height:220px;position:relative"><canvas id="trendChart" aria-label="Monthly spend trend chart"></canvas></div></div>
-          <div class="card"><div class="card-hdr"><span class="card-title">Team KPI at a Glance</span></div><div id="kpi-mini"></div></div>
+          <div class="card"><div class="card-hdr"><span class="card-title">KPI at a Glance</span></div><div id="kpi-mini"></div></div>
         </div>
 
         <!-- Spend bars -->
         <div class="card mb-3"><div class="card-hdr"><span class="card-title">Spend by Client — ر.س SAR</span></div><div id="spend-bars"></div></div>
 
-        <!-- Compare view -->
+        <!-- Compare -->
         <div class="card mb-3">
           <div class="card-hdr">
             <span class="card-title">Compare Months</span>
@@ -167,24 +204,22 @@
         </div>
       </section>
 
-      <!-- ════════ PAGE: CLIENTS ════════ -->
+      <!-- ════ PAGE: CLIENTS ════ -->
       <section class="page" id="page-clients">
         <div class="page-hdr">
           <div class="section-lbl">Client Directory</div>
-          <button class="btn btn-primary" onclick="openNewClientModal()">
+          <button class="btn btn-primary" id="btn-new-client" onclick="openNewClientModal()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             New Client
           </button>
         </div>
         <div class="card table-wrap">
-          <table>
-            <thead><tr><th>Client</th><th>Industry</th><th>Status</th><th>Budget (ر.س)</th><th>Start</th><th>Assigned To</th><th>Satisfaction</th><th>Actions</th></tr></thead>
-            <tbody id="clients-tbody"></tbody>
-          </table>
+          <table><thead><tr><th>Client</th><th>Industry</th><th>Status</th><th>Budget (ر.س)</th><th>Start</th><th>Assigned To</th><th>Satisfaction</th><th>Actions</th></tr></thead>
+          <tbody id="clients-tbody"></tbody></table>
         </div>
       </section>
 
-      <!-- ════════ PAGE: KPIs ════════ -->
+      <!-- ════ PAGE: KPIs ════ -->
       <section class="page" id="page-kpi">
         <div class="section-lbl mb-1">Team KPI Cards — click to view full breakdown & grade</div>
         <div class="lvl-legend mb-3">
@@ -195,7 +230,7 @@
         <div class="kpi-grid" id="kpi-grid"></div>
       </section>
 
-      <!-- ════════ PAGE: TEAM DASHBOARD ════════ -->
+      <!-- ════ PAGE: TEAM DASHBOARD ════ -->
       <section class="page" id="page-team">
         <div class="metrics-row mb-3">
           <div class="mc"><div class="mc-icon mc-purple"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div class="mc-body"><div class="mc-lbl">Combined Spend</div><div class="mc-val" id="t-spend">—</div><div class="mc-sub">SAR this month</div></div></div>
@@ -205,17 +240,17 @@
         </div>
         <div class="grid-2 mb-3">
           <div class="card"><div class="card-hdr"><span class="card-title">KPI by Member (Level-Adjusted)</span></div><div style="height:220px;position:relative"><canvas id="teamChart" aria-label="Team KPI bar chart"></canvas></div></div>
-          <div class="card"><div class="card-hdr"><span class="card-title">Results Achievement Rate</span></div><div style="height:220px;position:relative"><canvas id="resultsChart" aria-label="Results achievement doughnut chart"></canvas></div></div>
+          <div class="card"><div class="card-hdr"><span class="card-title">Results Achievement Rate</span></div><div style="height:220px;position:relative"><canvas id="resultsChart" aria-label="Results doughnut"></canvas></div></div>
         </div>
-        <div class="card"><div class="card-hdr"><span class="card-title">KPI Growth Trends — 3-Month Rolling</span></div><div style="height:220px;position:relative"><canvas id="growthChart" aria-label="KPI growth line chart"></canvas></div></div>
+        <div class="card"><div class="card-hdr"><span class="card-title">KPI Growth Trends — 3-Month Rolling</span></div><div style="height:220px;position:relative"><canvas id="growthChart" aria-label="Growth trend line chart"></canvas></div></div>
       </section>
 
-      <!-- ════════ PAGE: INTEGRATIONS ════════ -->
+      <!-- ════ PAGE: INTEGRATIONS ════ -->
       <section class="page" id="page-integrations">
         <div class="section-lbl mb-2">Integration Settings — Admin Only</div>
         <div class="card mb-2">
           <div class="card-hdr"><span class="card-title">Webhook Endpoint</span></div>
-          <p class="body-txt mb-2">Send live ad metrics from Make.com or Gateway Hub. All spend values must be in <strong>SAR ر.س</strong>.</p>
+          <p class="body-txt mb-2">Send live ad metrics from Make.com or Gateway Hub. All spend in <strong>SAR ر.س</strong>.</p>
           <div class="token-box">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
             <span style="flex:1;word-break:break-all">https://api.performanceocoda.sa/webhooks/v1/metrics/inbound</span>
@@ -237,19 +272,19 @@
           <pre class="code-block">{
   "client_id":  "CL-001",
   "platform":   "meta",          <span class="cc">// meta | google_ads | tiktok | snapchat | linkedin</span>
-  "objective":  "Leads",         <span class="cc">// matches your Campaign Objective key</span>
+  "objective":  "Leads",
   "date":       "2025-06-15",
   "period":     "monthly",
   "currency":   "SAR",
   "metrics": {
-    "spend_sar":   18450.00,     <span class="cc">// Actual spend in ر.س</span>
+    "spend_sar":   18450.00,
     "results":     312
   }
 }</pre>
         </div>
         <div class="card">
           <div class="card-hdr"><span class="card-title">Simulate Payload</span></div>
-          <p class="body-txt mb-2">Test the live-update pipeline — updates metrics and recalculates all KPIs instantly.</p>
+          <p class="body-txt mb-2">Test the live-update pipeline — updates metrics and recalculates KPIs instantly.</p>
           <div class="form-row3 mb-2">
             <div class="fg"><label class="fl">Client</label><select class="fi" id="sim-client"><option value="CL-001">CL-001 — Nour Fashion</option><option value="CL-002">CL-002 — Gulf Auto</option><option value="CL-003">CL-003 — MedPlus</option><option value="CL-004">CL-004 — Bloom Academy</option><option value="CL-005">CL-005 — Riyadh Eats</option><option value="CL-006">CL-006 — LuxStay</option><option value="CL-007">CL-007 — KidsZone</option><option value="CL-008">CL-008 — TechSpark</option></select></div>
             <div class="fg"><label class="fl">Actual Spend (ر.س)</label><input class="fi" type="number" id="sim-spend" value="22000" min="0"/></div>
@@ -266,22 +301,15 @@
 
 <!-- ══════════════ CLIENT DRAWER ══════════════ -->
 <div class="overlay" id="cl-overlay" onclick="closeDrawer(event)" aria-modal="true" role="dialog">
-  <div class="drawer" id="cl-drawer">
+  <div class="drawer">
     <div class="drawer-hdr">
-      <div>
-        <div class="drawer-title" id="dr-title">Client Profile</div>
-        <div class="drawer-sub" id="dr-sub"></div>
-      </div>
+      <div><div class="drawer-title" id="dr-title">Client Profile</div><div class="drawer-sub" id="dr-sub"></div></div>
       <div class="dr-hdr-btns">
-        <button class="btn btn-sm btn-outline" onclick="editActive()">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          Edit
-        </button>
-        <button class="btn btn-sm btn-danger" onclick="deleteActive()">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
-          Delete
-        </button>
-        <button class="icon-btn" onclick="closeDrawer(null,true)" aria-label="Close drawer">
+        <button class="btn btn-sm btn-outline" id="btn-edit-cl" onclick="editActive()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Edit</button>
+        <button class="btn btn-sm btn-danger" id="btn-del-cl" onclick="deleteActive()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>Delete</button>
+        <button class="icon-btn" onclick="closeDrawer(null,true)" aria-label="Close">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
         </button>
       </div>
@@ -308,9 +336,7 @@
   <div class="modal-box modal-sm">
     <div class="drawer-hdr" style="margin-bottom:1.25rem">
       <div class="drawer-title" id="cf-title">New Client</div>
-      <button class="icon-btn" onclick="closeCF()" aria-label="Close form">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
+      <button class="icon-btn" onclick="closeCF()" aria-label="Close"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
     <form id="cf-form" onsubmit="event.preventDefault();saveCF()">
       <input type="hidden" id="cf-eid"/>
@@ -331,46 +357,28 @@
   </div>
 </div>
 
-
-<!-- ══════════════ LOGIN SCREEN ══════════════ -->
-<div id="login-overlay" style="display:none">
-  <div>
-    <div class="login-brand">
-      <div class="login-brand-icon">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      </div>
-      <div class="login-brand-name">Performance <span>Ocoda</span></div>
-      <div class="login-brand-sub">Agency Intelligence Platform</div>
+<!-- ══════════════ PROFILE / CHANGE PASSWORD MODAL ══════════════ -->
+<div class="overlay overlay-center" id="profile-overlay" onclick="if(event.target===this)closeProfileModal()" aria-modal="true" role="dialog">
+  <div class="modal-box modal-sm">
+    <div class="drawer-hdr" style="margin-bottom:1.25rem">
+      <div class="drawer-title">User Profile & Settings</div>
+      <button class="icon-btn" onclick="closeProfileModal()" aria-label="Close"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
 
-    <div id="login-card">
-      <div class="login-card-title">Welcome back</div>
-      <div class="login-card-sub">Sign in to access your dashboard</div>
+    <!-- Profile info -->
+    <div class="profile-info-card" id="profile-info-card"></div>
 
-      <div class="login-field">
-        <label class="login-label" for="login-username">Username</label>
-        <input class="login-input" id="login-username" type="text"
-          placeholder="Enter your username" autocomplete="username" spellcheck="false"/>
-      </div>
-      <div class="login-field">
-        <label class="login-label" for="login-password">Password</label>
-        <input class="login-input" id="login-password" type="password"
-          placeholder="Enter your password" autocomplete="current-password"/>
-      </div>
+    <hr style="border:none;border-top:1px solid var(--bd);margin:1.25rem 0"/>
 
-      <button class="login-submit-btn" id="login-submit" type="button">Sign In</button>
-
-      <div id="login-error" role="alert"></div>
-
-      <!-- Credential hints (remove in production) -->
-      <div class="login-hint">
-        <div class="login-hint-title">Demo Credentials</div>
-        <div class="login-hint-row"><span class="login-hint-user">👑 admin</span><span class="login-hint-pass">Admin@2025!</span></div>
-        <div class="login-hint-row"><span class="login-hint-user">👤 hassan</span><span class="login-hint-pass">Hassan@2025!</span></div>
-        <div class="login-hint-row"><span class="login-hint-user">👤 dalia</span><span class="login-hint-pass">Dalia@2025!</span></div>
-        <div class="login-hint-row"><span class="login-hint-user">👤 engy</span><span class="login-hint-pass">Engy@2025!</span></div>
-        <div class="login-hint-row"><span class="login-hint-user">👤 ahmed</span><span class="login-hint-pass">Ahmed@2025!</span></div>
-      </div>
+    <!-- Change Password form -->
+    <div class="modal-sec-title">Change Password</div>
+    <div class="fg mb-2"><label class="fl">Current Password</label><input class="fi" type="password" id="pw-current" placeholder="Enter current password" autocomplete="current-password"/></div>
+    <div class="fg mb-2"><label class="fl">New Password</label><input class="fi" type="password" id="pw-new" placeholder="Enter new password" autocomplete="new-password"/></div>
+    <div class="fg mb-2"><label class="fl">Confirm New Password</label><input class="fi" type="password" id="pw-confirm" placeholder="Confirm new password" autocomplete="new-password"/></div>
+    <div id="pw-msg" class="pw-msg" role="alert" aria-live="assertive"></div>
+    <div class="form-footer">
+      <button type="button" class="btn btn-outline" onclick="closeProfileModal()">Close</button>
+      <button type="button" class="btn btn-primary" onclick="changePassword()">Update Password</button>
     </div>
   </div>
 </div>
