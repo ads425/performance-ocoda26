@@ -717,6 +717,130 @@ html.dark .lvb-junior { color: var(--blue);   }
 .resp-ok    { display: flex; align-items: flex-start; gap: 8px; background: var(--ok-bg); border: 1px solid var(--ok-bd); border-radius: var(--r2); padding: 10px 14px; color: var(--ok); font-size: 12px; }
 .body-txt   { font-size: 12px; color: var(--t3); line-height: 1.6; }
 
+
+/* ════════════════════════════════════════════════════════════
+   AUTH — LOGIN SCREEN
+════════════════════════════════════════════════════════════ */
+#login-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: linear-gradient(135deg, #0D111A 0%, #1A2235 50%, #0C447C 100%);
+  display: flex; align-items: center; justify-content: center;
+}
+
+.login-brand {
+  text-align: center; margin-bottom: 2rem;
+}
+.login-brand-icon {
+  width: 56px; height: 56px; border-radius: 14px;
+  background: var(--brand); margin: 0 auto 12px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 24px rgba(24,95,165,.5);
+}
+.login-brand-name {
+  font-size: 22px; font-weight: 700; color: #FFFFFF; letter-spacing: -.02em;
+}
+.login-brand-name span { color: #60A5D8; }
+.login-brand-sub { font-size: 12px; color: rgba(255,255,255,.45); margin-top: 3px; text-transform: uppercase; letter-spacing: .08em; }
+
+#login-card {
+  background: rgba(255,255,255,.07); backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,.12); border-radius: 20px;
+  padding: 2.5rem 2rem; width: 400px; max-width: 95vw;
+  box-shadow: 0 24px 64px rgba(0,0,0,.4);
+}
+html.dark #login-card { background: rgba(255,255,255,.05); }
+
+.login-card-title {
+  font-size: 18px; font-weight: 700; color: #FFFFFF; margin-bottom: 4px;
+}
+.login-card-sub { font-size: 12px; color: rgba(255,255,255,.5); margin-bottom: 1.75rem; }
+
+.login-field { margin-bottom: 1rem; }
+.login-label { display: block; font-size: 11px; font-weight: 700; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+.login-input {
+  width: 100%; padding: 11px 14px;
+  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
+  border-radius: 10px; color: #FFFFFF; font-size: 14px;
+  outline: none; transition: border-color .15s, background .15s;
+}
+.login-input::placeholder { color: rgba(255,255,255,.3); }
+.login-input:focus { border-color: #60A5D8; background: rgba(255,255,255,.12); }
+
+.login-submit-btn {
+  width: 100%; padding: 12px; margin-top: 1.25rem;
+  background: var(--brand); color: #FFFFFF; border: none;
+  border-radius: 10px; font-size: 14px; font-weight: 700;
+  cursor: pointer; transition: background .15s, box-shadow .15s;
+  box-shadow: 0 4px 16px rgba(24,95,165,.5);
+}
+.login-submit-btn:hover { background: var(--brand-dk); box-shadow: 0 6px 20px rgba(24,95,165,.6); }
+.login-submit-btn:active { transform: scale(.98); }
+
+#login-error {
+  display: none; background: rgba(163,45,45,.2); border: 1px solid rgba(163,45,45,.4);
+  border-radius: 8px; padding: 10px 14px; color: #F87171;
+  font-size: 12px; margin-top: 12px; text-align: center;
+}
+
+.login-hint {
+  margin-top: 1.5rem; padding-top: 1.25rem;
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+.login-hint-title { font-size: 10px; color: rgba(255,255,255,.35); text-transform: uppercase; letter-spacing: .07em; margin-bottom: 8px; }
+.login-hint-row   { display: flex; justify-content: space-between; margin-bottom: 5px; }
+.login-hint-user  { font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5); }
+.login-hint-pass  { font-size: 11px; color: rgba(255,255,255,.3); font-family: var(--mono); }
+
+/* Shake animation for wrong password */
+@keyframes login-shake {
+  0%,100%{ transform:translateX(0); }
+  20%     { transform:translateX(-8px); }
+  40%     { transform:translateX(8px); }
+  60%     { transform:translateX(-6px); }
+  80%     { transform:translateX(6px); }
+}
+.login-shake { animation: login-shake .45s ease; }
+
+/* ════════════════════════════════════════════════════════════
+   AUTH — TOPBAR USER BADGE + LOGOUT
+════════════════════════════════════════════════════════════ */
+#user-badge {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--surface2); border: 1px solid var(--bd);
+  border-radius: 20px; padding: 4px 12px 4px 4px;
+}
+.user-av { display: inline-flex; align-items: center; justify-content: center; font-weight: 700; border-radius: 50%; flex-shrink: 0; }
+.user-badge-info { line-height: 1.2; }
+.user-badge-name { font-size: 12px; font-weight: 700; color: var(--t1); }
+.user-badge-role { font-size: 10px; color: var(--t3); }
+.av-brand { background: var(--brand-lt); color: var(--brand); }
+
+#logout-btn {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 6px 12px; border-radius: var(--r2);
+  background: var(--err-bg); color: var(--err); border: 1px solid var(--err-bd);
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  transition: background .12s; white-space: nowrap;
+}
+#logout-btn:hover { background: var(--err); color: #fff; }
+
+/* RBAC read-only stars */
+.star-readonly { cursor: not-allowed; opacity: .55; }
+.star-readonly:hover { transform: none; }
+.rbac-lock { font-size: 11px; margin-left: 4px; }
+
+/* ════════════════════════════════════════════════════════════
+   AUTH — RBAC NOTICE BANNER
+════════════════════════════════════════════════════════════ */
+.rbac-notice {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--brand-lt); border: 1px solid var(--brand-bd);
+  border-radius: var(--r2); padding: 8px 14px; margin-bottom: 1rem;
+  font-size: 12px; color: var(--brand-dk);
+}
+html.dark .rbac-notice { color: #60A5D8; }
+.rbac-notice svg { flex-shrink: 0; }
+
 /* ────────────────────────────────────────
    RESPONSIVE
 ──────────────────────────────────────── */

@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="styles.css"/>
 </head>
 <body>
-<div class="app-shell">
+<div class="app-shell" id="app-shell" style="display:none">
 
   <!-- ══════════════ SIDEBAR ══════════════ -->
   <aside class="sidebar">
@@ -77,6 +77,12 @@
         </div>
         <span class="period-tag" id="period-tag">June 2025</span>
         <div class="sar-pill">ر.س SAR</div>
+        <!-- Auth: user badge + logout -->
+        <div id="user-badge" aria-label="Current user"></div>
+        <button id="logout-btn" type="button" aria-label="Logout">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Logout
+        </button>
         <button class="icon-btn" id="dark-btn" onclick="toggleDark()" title="Toggle dark mode" aria-label="Toggle dark mode">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
         </button>
@@ -322,6 +328,50 @@
         <button type="submit" class="btn btn-primary">Save Client</button>
       </div>
     </form>
+  </div>
+</div>
+
+
+<!-- ══════════════ LOGIN SCREEN ══════════════ -->
+<div id="login-overlay" style="display:none">
+  <div>
+    <div class="login-brand">
+      <div class="login-brand-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <div class="login-brand-name">Performance <span>Ocoda</span></div>
+      <div class="login-brand-sub">Agency Intelligence Platform</div>
+    </div>
+
+    <div id="login-card">
+      <div class="login-card-title">Welcome back</div>
+      <div class="login-card-sub">Sign in to access your dashboard</div>
+
+      <div class="login-field">
+        <label class="login-label" for="login-username">Username</label>
+        <input class="login-input" id="login-username" type="text"
+          placeholder="Enter your username" autocomplete="username" spellcheck="false"/>
+      </div>
+      <div class="login-field">
+        <label class="login-label" for="login-password">Password</label>
+        <input class="login-input" id="login-password" type="password"
+          placeholder="Enter your password" autocomplete="current-password"/>
+      </div>
+
+      <button class="login-submit-btn" id="login-submit" type="button">Sign In</button>
+
+      <div id="login-error" role="alert"></div>
+
+      <!-- Credential hints (remove in production) -->
+      <div class="login-hint">
+        <div class="login-hint-title">Demo Credentials</div>
+        <div class="login-hint-row"><span class="login-hint-user">👑 admin</span><span class="login-hint-pass">Admin@2025!</span></div>
+        <div class="login-hint-row"><span class="login-hint-user">👤 hassan</span><span class="login-hint-pass">Hassan@2025!</span></div>
+        <div class="login-hint-row"><span class="login-hint-user">👤 dalia</span><span class="login-hint-pass">Dalia@2025!</span></div>
+        <div class="login-hint-row"><span class="login-hint-user">👤 engy</span><span class="login-hint-pass">Engy@2025!</span></div>
+        <div class="login-hint-row"><span class="login-hint-user">👤 ahmed</span><span class="login-hint-pass">Ahmed@2025!</span></div>
+      </div>
+    </div>
   </div>
 </div>
 

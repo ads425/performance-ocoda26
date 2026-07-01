@@ -14,6 +14,176 @@ const APP = {
   webhook: 'https://api.performanceocoda.sa/webhooks/v1/metrics/inbound',
 };
 
+/* ══════════════════════════════════════════════════════════════
+   AUTH — User accounts & RBAC
+   Passwords are hashed with a simple SHA-256 placeholder.
+   In production replace with a real backend auth service.
+══════════════════════════════════════════════════════════════ */
+const AUTH_USERS = [
+  {
+    id:       'admin',
+    username: 'admin',
+    password: 'Admin@2025!',          // change in production
+    name:     'Admin',
+    role:     'admin',
+    level:    'Manager',
+    avatar:   'AD',
+    color:    'brand',
+  },
+  {
+    id:       'hassan',
+    username: 'hassan',
+    password: 'Hassan@2025!',
+    name:     'Hassan',
+    role:     'member',
+    level:    'Senior',
+    avatar:   'HS',
+    color:    'purple',
+  },
+  {
+    id:       'dalia',
+    username: 'dalia',
+    password: 'Dalia@2025!',
+    name:     'Dalia',
+    role:     'member',
+    level:    'Senior',
+    avatar:   'DA',
+    color:    'teal',
+  },
+  {
+    id:       'engy',
+    username: 'engy',
+    password: 'Engy@2025!',
+    name:     'Engy',
+    role:     'member',
+    level:    'Mid-Level',
+    avatar:   'EN',
+    color:    'coral',
+  },
+  {
+    id:       'ahmed',
+    username: 'ahmed',
+    password: 'Ahmed@2025!',
+    name:     'Ahmed',
+    role:     'member',
+    level:    'Junior',
+    avatar:   'AH',
+    color:    'blue',
+  },
+];
+
+/* Current session — null = not authenticated */
+let currentUser = null;
+
+/* Convenience helpers */
+const isAdmin  = () => currentUser?.role === 'admin';
+const isMember = () => currentUser?.role === 'member';
+
+/* Return clients visible to the current user */
+function visibleClients() {
+  if (!currentUser) return [];
+  if (isAdmin()) return clients;
+  return clients.filter(c => c.assigned.includes(currentUser.id));
+}
+
+/* Return members visible on the KPI page */
+function visibleMembers() {
+  if (!currentUser) return [];
+  if (isAdmin()) return members;
+  return members.filter(m => m.id === currentUser.id);
+}
+
+/* ══════════════════════════════════════════════════════════════
+   AUTH FUNCTIONS
+══════════════════════════════════════════════════════════════ */
+function showLogin() {
+  const ov = $id('login-overlay');
+  if (ov) { ov.style.display = 'flex'; }
+  const shell = $id('app-shell');
+  if (shell) shell.style.display = 'none';
+}
+
+function hideLogin() {
+  const ov = $id('login-overlay');
+  if (ov) { ov.style.display = 'none'; }
+  const shell = $id('app-shell');
+  if (shell) shell.style.display = 'flex';
+}
+
+function attemptLogin() {
+  const uname = ($id('login-username')?.value || '').trim().toLowerCase();
+  const pw    = ($id('login-password')?.value || '');
+  const errEl = $id('login-error');
+
+  const user = AUTH_USERS.find(u => u.username === uname && u.password === pw);
+  if (!user) {
+    if (errEl) {
+      errEl.textContent = 'Incorrect username or password. Please try again.';
+      errEl.style.display = 'block';
+    }
+    // Shake the card
+    const card = $id('login-card');
+    if (card) {
+      card.classList.add('login-shake');
+      setTimeout(() => card.classList.remove('login-shake'), 500);
+    }
+    return;
+  }
+
+  currentUser = user;
+  if (errEl) errEl.style.display = 'none';
+  hideLogin();
+  applyRBACToUI();
+  // Boot the app
+  renderDashboard();
+  renderClientTable();
+  renderKpiCards();
+  setTimeout(initDashCharts, 60);
+}
+
+function logout() {
+  currentUser = null;
+  // Clear sensitive fields
+  const up = $id('login-username'); if(up) up.value='';
+  const pp = $id('login-password'); if(pp) pp.value='';
+  showLogin();
+}
+
+/* Handle Enter key on login form */
+function loginKeydown(e) {
+  if (e.key === 'Enter') attemptLogin();
+}
+
+/* ── Apply role-based UI restrictions after login ── */
+function applyRBACToUI() {
+  // Update topbar profile badge
+  const badge = $id('user-badge');
+  if (badge && currentUser) {
+    const icon = isAdmin() ? '👑' : '👤';
+    badge.innerHTML = `
+      <div class="user-av av-sm av-${currentUser.color}">${currentUser.avatar}</div>
+      <div class="user-badge-info">
+        <div class="user-badge-name">${icon} ${currentUser.name}</div>
+        <div class="user-badge-role">${currentUser.level}</div>
+      </div>`;
+  }
+
+  // Hide nav items team members can't access
+  const teamNav  = document.querySelector('.nav-item[data-page="team"]');
+  const intNav   = document.querySelector('.nav-item[data-page="integrations"]');
+  if (!isAdmin()) {
+    if (teamNav)  teamNav.style.display  = 'none';
+    if (intNav)   intNav.style.display   = 'none';
+  } else {
+    if (teamNav)  teamNav.style.display  = '';
+    if (intNav)   intNav.style.display   = '';
+  }
+
+  // Update page title to show context
+  setTxt('topbar-title', 'Overview');
+  nav('dashboard');
+}
+
 /* Level-based KPI thresholds — fullAt = achievement rate that earns 100% of points */
 const LEVEL_CFG = {
   Senior:      { fullAt: 1.00, bannerCls: 'lvb-senior', label: 'Strict — 100% of target required' },
@@ -427,6 +597,11 @@ const PAGE_TITLES = {
 };
 
 function nav(pageId) {
+  // RBAC: block team members from restricted pages
+  if (isMember() && (pageId === 'team' || pageId === 'integrations')) {
+    pageId = 'dashboard';
+  }
+
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
   const pg=$id(`page-${pageId}`); if(pg) pg.classList.add('active');
@@ -462,14 +637,15 @@ function renderDashboard() {
 }
 
 function renderMetricCards() {
-  const totalBudget = clients.reduce((s,c)=>s+c.budget,0);
+  const vc = visibleClients();
+  const totalBudget = vc.reduce((s,c)=>s+c.budget,0);
   setHTML('mc-budget',     fmtS(totalBudget));
-  setHTML('mc-budget-sub', `SAR across ${clients.length} clients`);
+  setHTML('mc-budget-sub', `SAR across ${vc.length} client${vc.length!==1?'s':''}`);
 
-  // Aggregate across all clients
+  // Aggregate across visible clients only
   let totTS=0, totAS=0, totTR=0, totAR=0;
   let clientRateSum=0, clientRateCount=0;
-  clients.forEach(c => {
+  vc.forEach(c => {
     const ct = clientTotals(c);
     totTS += ct.tS; totAS += ct.aS; totTR += ct.tR; totAR += ct.aR;
     if (ct.tS > 0) {
@@ -491,23 +667,25 @@ function renderMetricCards() {
   const rb = $id('results-badge');
   if(rb){ rb.className=`ach-badge ach-${achCls(rRate)}`; rb.textContent=`${pctF(rRate*100)} avg achievement`; }
 
-  const avg = Math.round(members.reduce((s,m)=>s+calcKpi(m.id).total,0)/members.length);
+  const vm  = visibleMembers();
+  const avg = vm.length > 0 ? Math.round(vm.reduce((s,m)=>s+calcKpi(m.id).total,0)/vm.length) : 0;
   setHTML('mc-kpi', pct(avg));
   setHTML('t-kpi-avg', pct(avg));
 }
 
 function renderInsights() {
+  const vc=visibleClients(), vm=visibleMembers();
   const top=[], risk=[];
-  clients.forEach(c => {
+  vc.forEach(c => {
     const ct = clientTotals(c);
-    const r  = ct.resultsRate;           // avg-of-pct (correct)
+    const r  = ct.resultsRate;
     if (r>=0.90) top.push({name:c.name, r});
     if (r<0.70 && c.status==='Active') risk.push({name:c.name, r});
   });
   setHTML('ins-top',  top.length  ? top.map(x=>`<div class="ins-chip ic-ok">↑ ${x.name} — ${pctF(x.r*100)}</div>`).join('') : `<div class="ins-empty">No clients at ≥90% yet this month</div>`);
   setHTML('ins-risk', risk.length ? risk.map(x=>`<div class="ins-chip ic-bad">⚠ ${x.name} — ${pctF(x.r*100)}</div>`).join('') : `<div class="ins-empty">No underperforming accounts — great!</div>`);
-  setHTML('ins-workload', members.map(m=>{
-    const mc=clients.filter(c=>m.clients.includes(c.id));
+  setHTML('ins-workload', vm.map(m=>{
+    const mc=vc.filter(c=>m.clients.includes(c.id));
     const active=mc.filter(c=>c.status==='Active').length;
     const other=mc.length-active;
     return `<div class="wl-row">${avEl(m.color,m.av,'-sm')}<div class="wl-name">${m.name}</div><span class="badge b-active">${active} active</span>${other?`<span class="badge b-neut">${other} other</span>`:''}</div>`;
@@ -516,7 +694,7 @@ function renderInsights() {
 
 function renderSpendBars() {
   const el=$id('spend-bars'); if(!el) return;
-  const rows=clients.map(c=>{ const ct=clientTotals(c); return {name:c.name,spend:ct.aS,target:ct.tS}; })
+  const rows=visibleClients().map(c=>{ const ct=clientTotals(c); return {name:c.name,spend:ct.aS,target:ct.tS}; })
     .sort((a,b)=>b.spend-a.spend);
   const maxT=Math.max(...rows.map(r=>r.target),1);
   el.innerHTML=rows.map(r=>{
@@ -527,7 +705,7 @@ function renderSpendBars() {
 
 function renderKpiMini() {
   const el=$id('kpi-mini'); if(!el) return;
-  el.innerHTML=members.map(m=>{
+  el.innerHTML=visibleMembers().map(m=>{
     const k=calcKpi(m.id);
     return `<div class="kpi-mini-item"><div class="kpi-mini-meta"><span class="km-name">${m.name}</span><span class="km-level">${m.level}</span><span class="km-score" style="color:${MEMBER_COLORS[m.id]}">${pct(k.total)}</span></div><div class="prog-trk"><div class="prog-fill pf-${m.color}" style="width:${k.total}%"></div></div></div>`;
   }).join('');
@@ -558,8 +736,13 @@ function renderCompare() {
 ══════════════════════════════════════════════════════════════ */
 function renderClientTable() {
   const tbody=$id('clients-tbody'); if(!tbody) return;
+  const vc = visibleClients();
 
-  tbody.innerHTML=clients.map(c=>{
+  // Show/hide "New Client" button — only admin can add clients
+  const newBtn = document.querySelector('.page-hdr .btn-primary');
+  if (newBtn) newBtn.style.display = isAdmin() ? '' : 'none';
+
+  tbody.innerHTML=vc.map(c=>{
     const aNames=c.assigned.map(id=>members.find(m=>m.id===id)?.name||id).join(', ');
     const ct=clientTotals(c);
     const r=ct.resultsRate;                          // avg-of-pct
@@ -578,10 +761,7 @@ function renderClientTable() {
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             View Profile
           </button>
-          <button class="act-btn act-del" data-act="del" data-cid="${c.id}" aria-label="Delete client">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
-            Delete
-          </button>
+          ${isAdmin()?`<button class="act-btn act-del" data-act="del" data-cid="${c.id}" aria-label="Delete client"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>Delete</button>`:''}
         </div>
       </td>
     </tr>`;
@@ -1013,7 +1193,7 @@ function deleteClient(cid) {
 ══════════════════════════════════════════════════════════════ */
 function renderKpiCards() {
   const grid=$id('kpi-grid'); if(!grid) return;
-  grid.innerHTML=members.map(m=>{
+  grid.innerHTML=visibleMembers().map(m=>{
     const k=calcKpi(m.id);
     const col=MEMBER_COLORS[m.id]||'#378ADD';
     const lvlCls=m.level==='Senior'?'lvl-senior':m.level==='Mid-Level'?'lvl-mid':'lvl-junior';
@@ -1069,15 +1249,24 @@ function _renderKpiModal(memberId) {
     let tot=0,cnt=0;
     m.clients.forEach(cid=>{ if(sc[cid]){ tot+=sc[cid][i]; cnt++; } });
     const avg=cnt>0?tot/cnt:0;
-    const stars=[1,2,3,4,5].map(v=>`<button class="star-btn ${Math.round(avg)>=v?'on':''}" onclick="setOpsAll('${memberId}',${i},${v})" title="${v}/5" aria-label="Set ${label} to ${v} stars">★</button>`).join('');
-    return `<div class="ops-row"><div class="ops-lbl">${label}</div><div class="ops-stars">${stars}<span class="ops-avg">${avg.toFixed(1)}/5</span></div></div>`;
+    // Non-admin members see read-only stars for their own card
+    const canEdit = isAdmin();
+    const stars=[1,2,3,4,5].map(v=>`<button class="star-btn ${Math.round(avg)>=v?'on':''} ${canEdit?'':'star-readonly'}"
+      ${canEdit?`onclick="setOpsAll('${memberId}',${i},${v})" title="${v}/5" aria-label="Set ${label} to ${v} stars"`
+               :`disabled title="Only the Manager can edit scores" aria-label="${label}: ${Math.round(avg)}/5"`}
+    >★</button>`).join('');
+    return `<div class="ops-row"><div class="ops-lbl">${label}</div><div class="ops-stars">${stars}<span class="ops-avg">${avg.toFixed(1)}/5</span>${!canEdit?'<span class="rbac-lock" title="Read-only for team members">🔒</span>':''}</div></div>`;
   }).join('');
 
   const perClientOps=m.clients.map(cid=>{
     const cl=clients.find(x=>x.id===cid); if(!cl) return '';
     return `<div class="per-cl-ops"><div class="per-cl-name">${cl.name}</div>${OPS_LABELS.map((lbl,i)=>{
       const v=(sc[cid]||[])[i]||0;
-      const stars=[1,2,3,4,5].map(sv=>`<button class="star-btn star-sm ${v>=sv?'on':''}" onclick="setOpsClient('${memberId}','${cid}',${i},${sv})" title="${lbl} ${sv}/5">★</button>`).join('');
+      const canEditPC=isAdmin();
+      const stars=[1,2,3,4,5].map(sv=>`<button class="star-btn star-sm ${v>=sv?'on':''} ${canEditPC?'':'star-readonly'}"
+        ${canEditPC?`onclick="setOpsClient('${memberId}','${cid}',${i},${sv})" title="${lbl} ${sv}/5"`
+                   :`disabled title="Read-only"`}
+      >★</button>`).join('');
       return `<div class="pc-row"><span class="pc-lbl muted">${lbl}</span><span style="display:flex;align-items:center;gap:1px">${stars}<span class="muted" style="font-size:10px;margin-left:4px">${v}/5</span></span></div>`;
     }).join('')}</div>`;
   }).join('');
@@ -1138,10 +1327,11 @@ function closeKpiModal(e, force) {
    16. TEAM DASHBOARD
 ══════════════════════════════════════════════════════════════ */
 function renderTeamMetrics() {
+  const vc=visibleClients(), vm=visibleMembers();
   let totAS=0,totAR=0,totTR=0;
-  clients.forEach(c=>{ const ct=clientTotals(c); totAS+=ct.aS; totAR+=ct.aR; totTR+=ct.tR; });
-  const avg=Math.round(members.reduce((s,m)=>s+calcKpi(m.id).total,0)/members.length);
-  const sat=clients.filter(c=>c.satisfaction==='Satisfied').length;
+  vc.forEach(c=>{ const ct=clientTotals(c); totAS+=ct.aS; totAR+=ct.aR; totTR+=ct.tR; });
+  const avg=vm.length>0?Math.round(vm.reduce((s,m)=>s+calcKpi(m.id).total,0)/vm.length):0;
+  const sat=vc.filter(c=>c.satisfaction==='Satisfied').length;
   setHTML('t-spend',       fmtS(totAS));
   setHTML('t-results',     fmt(totAR));
   setHTML('t-results-sub', `vs ${fmt(totTR)} target`);
@@ -1165,12 +1355,13 @@ function initDashCharts() {
 function initTeamCharts() {
   destroyChart('team'); destroyChart('results'); destroyChart('growth');
   const tCtx=$id('teamChart');
-  if(tCtx) charts.team=new Chart(tCtx,{type:'bar',data:{labels:members.map(m=>m.name),datasets:[{label:'KPI %',data:members.map(m=>calcKpi(m.id).total),backgroundColor:['#7F77DD','#1D9E75','#D85A30','#378ADD'],borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:100,ticks:{callback:v=>v+'%',color:TC},grid:{color:GC}},x:{ticks:{color:TC},grid:{display:false}}}}});
+  const vm2=visibleMembers();
+  if(tCtx) charts.team=new Chart(tCtx,{type:'bar',data:{labels:vm2.map(m=>m.name),datasets:[{label:'KPI %',data:vm2.map(m=>calcKpi(m.id).total),backgroundColor:['#7F77DD','#1D9E75','#D85A30','#378ADD'],borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{min:0,max:100,ticks:{callback:v=>v+'%',color:TC},grid:{color:GC}},x:{ticks:{color:TC},grid:{display:false}}}}});
 
   const rCtx=$id('resultsChart');
   if(rCtx){
     let totR=0,totT=0;
-    clients.forEach(c=>{ const ct=clientTotals(c); totR+=ct.aR; totT+=ct.tR; });
+    visibleClients().forEach(c=>{ const ct=clientTotals(c); totR+=ct.aR; totT+=ct.tR; });
     charts.results=new Chart(rCtx,{type:'doughnut',data:{labels:['Achieved','Remaining'],datasets:[{data:[totR,Math.max(totT-totR,0)],backgroundColor:['#1D9E75','rgba(136,135,128,.15)'],borderWidth:0,hoverOffset:4}]},options:{responsive:true,maintainAspectRatio:false,cutout:'72%',plugins:{legend:{labels:{color:TC,font:{size:11},usePointStyle:true}}},layout:{padding:8}}});
   }
 
@@ -1228,14 +1419,27 @@ function toggleDark(){
    20. INIT
 ══════════════════════════════════════════════════════════════ */
 function init(){
+  // Wire nav items
   document.querySelectorAll('.nav-item[data-page]').forEach(el=>{
     el.addEventListener('click',()=>nav(el.dataset.page));
   });
   setTxt('period-tag',`${MONTHS[state.month-1]} ${state.year}`);
-  renderDashboard();
-  renderClientTable();
-  renderKpiCards();
-  setTimeout(initDashCharts,60);
+
+  // Wire login form
+  const loginBtn = $id('login-submit');
+  if (loginBtn) loginBtn.addEventListener('click', attemptLogin);
+
+  // Wire logout button
+  const logoutBtn = $id('logout-btn');
+  if (logoutBtn) logoutBtn.addEventListener('click', logout);
+
+  // Wire Enter key on login inputs
+  [$id('login-username'), $id('login-password')].forEach(el=>{
+    if (el) el.addEventListener('keydown', loginKeydown);
+  });
+
+  // Show login screen on startup
+  showLogin();
 }
 
 document.addEventListener('DOMContentLoaded',init);
