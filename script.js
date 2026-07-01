@@ -30,12 +30,83 @@ const OPS_LABELS = [
   'AI Tools Utilization',
 ];
 
-/* Suggested campaign objectives for quick-add chips */
-const SUGGESTED_OBJ = [
-  'Leads', 'Conversions', 'Messages', 'App Installs',
-  'Brand Awareness', 'Reach', 'Traffic', 'Engagement',
-  'Video Views', 'Store Visits', 'Catalog Sales', 'Event Responses',
+/**
+ * OBJ_CATALOG — predefined media-buying objectives.
+ * Each entry has: name (unique key), icon (inline SVG path data),
+ * color (accent hex), and bg (light background hex).
+ */
+const OBJ_CATALOG = [
+  {
+    name: 'Leads',
+    icon: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>`,
+    color: '#185FA5', bg: '#E6F1FB',
+  },
+  {
+    name: 'Conversions',
+    icon: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+    color: '#1D9E75', bg: '#EAF3DE',
+  },
+  {
+    name: 'Messages',
+    icon: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
+    color: '#7F77DD', bg: '#EEEDFE',
+  },
+  {
+    name: 'Brand Awareness',
+    icon: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`,
+    color: '#D85A30', bg: '#FAECE7',
+  },
+  {
+    name: 'App Installs',
+    icon: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>`,
+    color: '#BA7517', bg: '#FAEEDA',
+  },
+  {
+    name: 'Store Visits',
+    icon: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
+    color: '#085041', bg: '#E1F5EE',
+  },
+  {
+    name: 'Traffic / Engagement',
+    icon: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`,
+    color: '#378ADD', bg: '#E6F1FB',
+  },
+  {
+    name: 'Reach',
+    icon: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>`,
+    color: '#3C3489', bg: '#EEEDFE',
+  },
+  {
+    name: 'Video Views',
+    icon: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>`,
+    color: '#A32D2D', bg: '#FCEBEB',
+  },
 ];
+
+/* Lookup helper — returns catalog entry or a generic default */
+function getObjMeta(name) {
+  return OBJ_CATALOG.find(o => o.name === name) || {
+    name,
+    icon: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
+    color: '#888780', bg: '#F1EFE8',
+  };
+}
+
+/* Build dropdown options — exclude already-added objectives */
+function buildObjDropdown(addedNames, uid) {
+  const available = OBJ_CATALOG.filter(o => !addedNames.includes(o.name));
+  const opts = available.map(o =>
+    `<option value="${o.name}">${o.name}</option>`
+  ).join('');
+  return `<select class="obj-dropdown" id="obj-sel-${uid}" onchange="handleObjDropdownChange('${uid}')">
+    <option value="">— Select objective to add —</option>
+    ${opts}
+    <option value="__custom__">+ Custom Objective…</option>
+  </select>`;
+}
+
+/* Kept for legacy compatibility — no longer used for suggestions */
+const SUGGESTED_OBJ = OBJ_CATALOG.map(o => o.name);
 
 const MEMBER_COLORS = {
   hassan: '#7F77DD',
@@ -575,131 +646,192 @@ function buildDrawerBody(c) {
   </div>
   <hr class="divider"/>`;
 
-  /* Platform cards with per-objective input rows */
+  /* Platform cards — premium v5.1 redesign */
   const platHTML=c.platforms.map((p,pIdx)=>{
     const ps=platStats(p);
-    // resultsAvgRate = avg-of-pct (correct composite metric)
-    // spendRate      = plain SAR ratio
     const overallRate=(ps.resultsAvgRate + ps.spendRate)/2;
+    const uid=`${c.id}-${pIdx}`;
 
-    /* Per-objective rows — each shows its own % badge */
-    const objRows=(p.objectives||[]).map((o,oIdx)=>{
-      const or=o.targetResults>0 ? o.actualResults/o.targetResults : 0;
-      const os=o.targetSpend>0   ? o.actualSpend/o.targetSpend     : 0;
-      // Individual objective achievement badge (results %)
-      const objPctBadge=o.targetResults>0
-        ? `<span class="ach-badge ach-${achCls(or)}" style="font-size:10px;margin-left:6px">${pctF(or*100)} results</span>`
-        : '';
+    /* ── Per-objective premium metric cards ── */
+    const objCards=(p.objectives||[]).map((o,oIdx)=>{
+      const or = o.targetResults>0 ? o.actualResults/o.targetResults : 0;
+      const os = o.targetSpend>0   ? o.actualSpend/o.targetSpend     : 0;
+      const meta = getObjMeta(o.name);
+      const aCls = achCls(or);
+
+      /* Achievement % badge on the header */
+      const pctBadge = o.targetResults>0
+        ? `<span class="obj-pct-badge ach-badge ach-${aCls}">${pctF(or*100)} achieved</span>`
+        : `<span class="obj-pct-badge" style="background:var(--surface2);color:var(--t3);border:1px solid var(--bd);font-size:11px;padding:3px 8px;border-radius:10px;font-weight:600">No target set</span>`;
+      const perfBdg = platPerfBadge(or);
+
+      /* Spend utilisation hint */
+      const spendHint = o.targetSpend>0
+        ? `${pctF(os*100)} utilized`
+        : 'No spend target';
+
       return `
-      <div class="obj-row" id="objrow-${c.id}-${pIdx}-${oIdx}">
-        <div class="obj-row-hdr">
-          <div class="obj-row-name">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            ${o.name}
-            ${objPctBadge}
-            ${platPerfBadge(or)}
+      <div class="obj-card" id="objrow-${c.id}-${pIdx}-${oIdx}">
+        <div class="obj-card-hdr">
+          <div class="obj-card-hdr-left">
+            <div class="obj-type-icon" style="background:${meta.bg};color:${meta.color};border:1px solid ${meta.color}22">
+              ${meta.icon}
+            </div>
+            <span class="obj-card-name">${o.name}</span>
           </div>
-          <button class="obj-row-del" onclick="removeObjRow('${c.id}',${pIdx},${oIdx})" title="Remove objective" aria-label="Remove ${o.name}">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-          </button>
+          <div class="obj-card-hdr-right">
+            ${pctBadge}
+            ${perfBdg}
+            <button class="obj-del-btn" onclick="removeObjRow('${c.id}',${pIdx},${oIdx})"
+              title="Remove ${o.name}" aria-label="Remove ${o.name}">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
         </div>
-        <div class="obj-metrics">
-          <div class="obj-metric-cell">
-            <div class="obj-metric-lbl">Target Results</div>
-            <input class="obj-metric-inp" type="number" value="${o.targetResults}" min="0"
-              onchange="updateObjField('${c.id}',${pIdx},${oIdx},'targetResults',this.value)">
+        <div class="obj-metrics-grid">
+          <div class="obj-metric-col">
+            <div class="omc-label">Target Results</div>
+            <input class="omc-input" type="number" value="${o.targetResults}" min="0"
+              onchange="updateObjField('${c.id}',${pIdx},${oIdx},'targetResults',this.value)"
+              placeholder="0">
+            <div class="omc-hint">Goal for this objective</div>
           </div>
-          <div class="obj-metric-cell">
-            <div class="obj-metric-lbl">Actual Results</div>
-            <input class="obj-metric-inp ${achCls(or)}-t" type="number" value="${o.actualResults}" min="0"
-              onchange="updateObjField('${c.id}',${pIdx},${oIdx},'actualResults',this.value)">
+          <div class="obj-metric-col">
+            <div class="omc-label">Actual Results</div>
+            <input class="omc-input ${aCls}-t" type="number" value="${o.actualResults}" min="0"
+              onchange="updateObjField('${c.id}',${pIdx},${oIdx},'actualResults',this.value)"
+              placeholder="0">
+            <div class="omc-hint ${aCls}-t">${o.targetResults>0?pctF(or*100)+' of target':''}</div>
           </div>
-          <div class="obj-metric-cell">
-            <div class="obj-metric-lbl">Target Spend (${APP.sym})</div>
-            <input class="obj-metric-inp" type="number" value="${o.targetSpend}" min="0"
-              onchange="updateObjField('${c.id}',${pIdx},${oIdx},'targetSpend',this.value)">
+          <div class="obj-metric-col">
+            <div class="omc-label">Target Spend (${APP.sym})</div>
+            <input class="omc-input" type="number" value="${o.targetSpend}" min="0"
+              onchange="updateObjField('${c.id}',${pIdx},${oIdx},'targetSpend',this.value)"
+              placeholder="0">
+            <div class="omc-hint">Budget allocated</div>
           </div>
-          <div class="obj-metric-cell">
-            <div class="obj-metric-lbl">Actual Spend (${APP.sym})</div>
-            <input class="obj-metric-inp ${achCls(os)}-t" type="number" value="${o.actualSpend}" min="0"
-              onchange="updateObjField('${c.id}',${pIdx},${oIdx},'actualSpend',this.value)">
+          <div class="obj-metric-col">
+            <div class="omc-label">Actual Spend (${APP.sym})</div>
+            <input class="omc-input ${achCls(os)}-t" type="number" value="${o.actualSpend}" min="0"
+              onchange="updateObjField('${c.id}',${pIdx},${oIdx},'actualSpend',this.value)"
+              placeholder="0">
+            <div class="omc-hint">${spendHint}</div>
           </div>
         </div>
       </div>`;
     }).join('');
 
-    /* Suggestions — filter already-added */
+    /* ── Platform icon based on name ── */
+    const platIconSVG = p.name.toLowerCase().includes('google')
+      ? `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`
+      : p.name.toLowerCase().includes('tiktok') || p.name.toLowerCase().includes('snap')
+      ? `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>`
+      : p.name.toLowerCase().includes('linkedin')
+      ? `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>`
+      : `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>`;
+
     const addedNames=(p.objectives||[]).map(o=>o.name);
-    const suggs=SUGGESTED_OBJ.filter(s=>!addedNames.includes(s)).slice(0,7)
-      .map(s=>`<span class="obj-sugg" onclick="addObjByName('${c.id}',${pIdx},'${s}')">${s}</span>`).join('');
+
+    /* ── Platform Totals dark card ── */
+    const totalsAchCls = achCls(ps.resultsAvgRate);
+    const totalsColor  = totalsAchCls==='ok'?'pt-ach-ok':totalsAchCls==='warn'?'pt-ach-warn':'pt-ach-bad';
+    const totalsCard = ps.totalTS>0 ? `
+      <div class="plat-totals">
+        <div class="plat-totals-hdr">
+          <div class="plat-totals-lbl">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            Platform Totals — Auto-Aggregated
+          </div>
+          <div class="plat-totals-formula">Results % = avg of all objective rates</div>
+        </div>
+        <div class="plat-totals-grid">
+          <div class="pt-col">
+            <div class="pt-lbl">Results Avg</div>
+            <div class="pt-val-big ${totalsColor}">${pctF(ps.resultsAvgRate*100)}</div>
+            <div class="pt-sub">${(p.objectives||[]).filter(o=>o.targetResults>0).length} active objectives</div>
+          </div>
+          <div class="pt-col">
+            <div class="pt-lbl">Spend Utilized</div>
+            <div class="pt-val-big">${pctF(ps.spendRate*100)}</div>
+            <div class="pt-sub">${fmtS(ps.totalAS)} of ${fmtS(ps.totalTS)}</div>
+          </div>
+          <div class="pt-col">
+            <div class="pt-lbl">Target Spend</div>
+            <div class="pt-val">${fmtS(ps.totalTS)}</div>
+            <div class="pt-sub">Budgeted</div>
+          </div>
+          <div class="pt-col">
+            <div class="pt-lbl">Actual Spend</div>
+            <div class="pt-val">${fmtS(ps.totalAS)}</div>
+            <div class="pt-sub">${fmtS(ps.totalTS-ps.totalAS)} remaining</div>
+          </div>
+        </div>
+        <div class="plat-bars">
+          <div class="sbar-row">
+            <div class="sbar-lbl">Results avg</div>
+            <div class="sbar-trk"><div class="sbar-fill sf-${achCls(ps.resultsAvgRate)}" style="width:${Math.min(ps.resultsAvgRate*100,100)}%"></div></div>
+            <div class="sbar-val">${pctF(ps.resultsAvgRate*100)}</div>
+          </div>
+          <div class="sbar-row">
+            <div class="sbar-lbl">Spend ${APP.sym}</div>
+            <div class="sbar-trk"><div class="sbar-fill sf-${achCls(ps.spendRate)}" style="width:${Math.min(ps.spendRate*100,100)}%"></div></div>
+            <div class="sbar-val">${pctF(ps.spendRate*100)}</div>
+          </div>
+        </div>
+      </div>` : '';
 
     return `
     <div class="plat-card" id="plat-${c.id}-${pIdx}">
+      <!-- Platform header -->
       <div class="plat-hdr">
-        <div>
-          <div class="plat-name">${p.name} ${platPerfBadge(overallRate)}</div>
-          <div class="muted" style="font-size:11px;margin-top:2px">${(p.objectives||[]).map(o=>o.name).join(', ')||'No objectives'}</div>
+        <div class="plat-hdr-left">
+          <div class="plat-icon">${platIconSVG}</div>
+          <div>
+            <div class="plat-name">${p.name} ${platPerfBadge(overallRate)}</div>
+            <div class="plat-obj-list">${addedNames.join(' · ')||'No objectives added'}</div>
+          </div>
         </div>
-        <button class="act-btn act-del" onclick="removePlatform('${c.id}',${pIdx})" style="padding:3px 8px;font-size:11px" aria-label="Remove platform">Remove</button>
-      </div>
-
-      <!-- Add new objective -->
-      <div class="obj-editor">
-        <div class="obj-editor-lbl">Campaign Objectives — each generates its own metrics row</div>
-        <div class="obj-sugg-row">${suggs}</div>
-        <div class="obj-add-row">
-          <input class="obj-add-inp" id="obj-inp-${c.id}-${pIdx}" placeholder="Type custom objective + Enter"
-            onkeydown="if(event.key==='Enter'){event.preventDefault();addObjFromInput('${c.id}',${pIdx});}">
-          <button class="btn btn-xs btn-primary" onclick="addObjFromInput('${c.id}',${pIdx})">+ Add</button>
+        <div class="plat-hdr-right">
+          <button class="act-btn act-del" onclick="removePlatform('${c.id}',${pIdx})"
+            style="padding:4px 10px;font-size:11px" aria-label="Remove platform">
+            Remove
+          </button>
         </div>
       </div>
 
-      <!-- Per-objective metric rows -->
-      <div class="obj-rows">${objRows||'<div class="muted" style="font-size:12px;padding:8px 0">No objectives yet — add one above to unlock metric inputs.</div>'}</div>
+      <!-- Platform body -->
+      <div class="plat-body">
 
-      <!-- Platform totals (auto-aggregated) -->
-      ${ps.totalTS>0?`
-      <div class="plat-totals">
-        <div class="plat-totals-lbl">
-          Platform Totals — Auto-Aggregated
-          <span style="font-weight:400;font-size:9px;opacity:.75;margin-left:6px">
-            Results % = avg of objective achievement rates (not raw sum)
-          </span>
-        </div>
-        <div class="plat-totals-grid">
-          <div class="pt-cell">
-            <div class="pt-lbl">Results Avg Achievement</div>
-            <div class="pt-val" style="font-size:16px">${pctF(ps.resultsAvgRate*100)}</div>
+        <!-- Dropdown objective selector -->
+        <div class="obj-selector-wrap">
+          <div class="obj-selector-label">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Add Campaign Objective
           </div>
-          <div class="pt-cell">
-            <div class="pt-lbl">Active Objectives</div>
-            <div class="pt-val">${(p.objectives||[]).filter(o=>o.targetResults>0).length} with targets</div>
-          </div>
-          <div class="pt-cell">
-            <div class="pt-lbl">Target Spend</div>
-            <div class="pt-val">${fmtS(ps.totalTS)}</div>
-          </div>
-          <div class="pt-cell">
-            <div class="pt-lbl">Actual Spend</div>
-            <div class="pt-val">${fmtS(ps.totalAS)} <span style="font-size:10px;opacity:.8">(${pctF(ps.spendRate*100)})</span></div>
+          <div class="obj-selector-row">
+            ${buildObjDropdown(addedNames, uid)}
+            <input class="obj-custom-inp" id="obj-custom-${uid}"
+              placeholder="Type custom objective name…"
+              onkeydown="if(event.key==='Enter'){event.preventDefault();addObjFromDropdown('${c.id}',${pIdx},'${uid}');}">
+            <button class="obj-add-btn" onclick="addObjFromDropdown('${c.id}',${pIdx},'${uid}')">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Add
+            </button>
           </div>
         </div>
-      </div>`:''}
 
-      <!-- Progress bars using corrected rates -->
-      ${ps.totalTS>0?`
-      <div class="plat-bars">
-        <div class="sbar-row">
-          <div class="sbar-lbl">Results avg</div>
-          <div class="sbar-trk"><div class="sbar-fill sf-${achCls(ps.resultsAvgRate)}" style="width:${Math.min(ps.resultsAvgRate*100,100)}%"></div></div>
-          <div class="sbar-val">${pctF(ps.resultsAvgRate*100)} avg</div>
+        <!-- Objective metric cards -->
+        <div class="obj-rows">
+          ${objCards || `<div class="obj-empty-state">
+            <div class="obj-empty-icon">📊</div>
+            <div>No objectives added yet</div>
+            <div style="margin-top:4px;font-size:11px">Select from the dropdown above to unlock metric inputs</div>
+          </div>`}
         </div>
-        <div class="sbar-row">
-          <div class="sbar-lbl">Spend ${APP.sym}</div>
-          <div class="sbar-trk"><div class="sbar-fill sf-${achCls(ps.spendRate)}" style="width:${Math.min(ps.spendRate*100,100)}%"></div></div>
-          <div class="sbar-val">${fmtS(ps.totalAS)} / ${fmtS(ps.totalTS)}</div>
-        </div>
-      </div>`:''}
+
+        <!-- Platform totals dark card -->
+        ${totalsCard}
+      </div>
     </div>`;
   }).join('');
 
@@ -732,20 +864,54 @@ function saveAllChanges(cid) {
   openDrawer(cid);
 }
 
-/* ── Add objective by name (from suggestion chip or input) ── */
+/* ── Add objective by name (internal helper) ── */
 function addObjByName(cid, pIdx, name) {
   const c=clients.find(x=>x.id===cid); if(!c) return;
   if(!c.platforms[pIdx].objectives) c.platforms[pIdx].objectives=[];
-  if(c.platforms[pIdx].objectives.some(o=>o.name===name)) return; // no dupe
-  c.platforms[pIdx].objectives.push({ name, targetResults:0, actualResults:0, targetSpend:0, actualSpend:0 });
+  if(c.platforms[pIdx].objectives.some(o=>o.name===name)) {
+    alert(`"${name}" is already added to this platform.`); return;
+  }
+  c.platforms[pIdx].objectives.push({
+    name, targetResults:0, actualResults:0, targetSpend:0, actualSpend:0
+  });
   openDrawer(cid);
 }
 
-function addObjFromInput(cid, pIdx) {
-  const inp=$id(`obj-inp-${cid}-${pIdx}`); if(!inp) return;
-  const name=inp.value.trim(); if(!name) return;
-  inp.value='';
+/* ── Dropdown change handler — show/hide custom input ── */
+function handleObjDropdownChange(uid) {
+  const sel    = $id(`obj-sel-${uid}`);
+  const custom = $id(`obj-custom-${uid}`);
+  if (!sel || !custom) return;
+  if (sel.value === '__custom__') {
+    custom.classList.add('visible');
+    custom.focus();
+  } else {
+    custom.classList.remove('visible');
+    custom.value = '';
+  }
+}
+
+/* ── Add from dropdown (or custom input if __custom__ selected) ── */
+function addObjFromDropdown(cid, pIdx, uid) {
+  const sel    = $id(`obj-sel-${uid}`);
+  const custom = $id(`obj-custom-${uid}`);
+  if (!sel) return;
+
+  let name = '';
+  if (sel.value === '__custom__') {
+    name = custom?.value.trim() || '';
+    if (!name) { custom?.focus(); return; }
+  } else {
+    name = sel.value;
+    if (!name) return;
+  }
+
   addObjByName(cid, pIdx, name);
+}
+
+/* ── Legacy compat (still used by some paths) ── */
+function addObjFromInput(cid, pIdx) {
+  /* No longer wired to any visible input — kept for safety */
 }
 
 function removeObjRow(cid, pIdx, oIdx) {
